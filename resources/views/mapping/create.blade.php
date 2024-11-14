@@ -8,7 +8,7 @@
     <style>
         #map {
             height: 400px;
-            width: 50%;
+            width: 100%;
         }
     </style>
     <div class="p-4 sm:ml-64">
