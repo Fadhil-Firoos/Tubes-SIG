@@ -15,7 +15,8 @@ class SavePointController extends Controller
      */
     public function index()
     {
-        //
+        $coordinates = Coordinate::where('unique_id', Auth::id())->get();
+        return view('mapping.index', compact('coordinates'));
     }
 
     /**
