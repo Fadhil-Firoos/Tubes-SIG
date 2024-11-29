@@ -20,7 +20,7 @@
                 <div id="map" class="rounded-lg"></div>
             </div>
             <div class="p-2 border-2 border-gray-200 bg-gray-800 rounded-xl mt-7">
-            <form action="/mapping/create" method="post" enctype="multipart/form-data">
+                <form action="/mapping/create" method="post" enctype="multipart/form-data">
                     <div class="col-span-full">
                         <label for="cover-photo" class="block text-sm/6 font-medium text-white">Cover photo</label>
                             <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-200/25 px-6 py-10">
