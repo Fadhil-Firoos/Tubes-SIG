@@ -125,7 +125,7 @@
                 </a>
 
                 <!-- Dropdown Menu -->
-                <ul x-show="isSubMenu" x-transition class="space-y-1 mt-2" x-cloak>
+                <ul x-show="isSubMenu" class="space-y-1 mt-2" x-transition x-cloak>
                     <li>
                         <a href="{{ route('users-index') }}"
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
