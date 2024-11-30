@@ -16,39 +16,44 @@
                         <th class="py-2 px-4 border border-gray-400 text-center">Rekening</th>
                         <th class="py-2 px-4 border border-gray-400 text-center">Status</th>
                         <th class="py-2 px-4 border border-gray-400 text-center">Password</th>
+                        <th class="py-2 px-4 border border-gray-400 text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($data as $item)
                     <tr class="text-slate-700">
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">Henry Carnegie</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">henrycarnegie23@gmail.com</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">PT. Jann Azzam Mandiri</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">Henry Carnegie</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">Jl. Sukarame 12, Bandar Lampung</td>
+                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">{{ $item->name }}</td>
+                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">{{ $item->email }}</td>
                         <td class="py-2 px-4 border border-gray-400 text-center text-sm">
-                            <img src="{{ asset('images/logo.png') }}" alt="" class="w-10 h-10">
+                            {{ $item->vendor->nama_company }}
                         </td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">06102141</td>
                         <td class="py-2 px-4 border border-gray-400 text-center text-sm">
-                            <span class="px-2 py-1 bg-green-300 text-green-800 text-sm rounded-lg">Aktif</span>
+                            {{ $item->vendor->nama_pemilik }}
+                        </td>
+                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">
+                            {{ $item->vendor->alamat }}
+                        </td>
+                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">
+                            <img src="{{ asset('storage/' . $item->vendor->image_users) ?? asset('images/logo.png') }}"
+                                 alt="" class="w-10 h-10">
+                        </td>
+                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">
+                            {{ $item->vendor->rekening }}
+                        </td>
+                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">
+                            <span class="px-2 py-1 {{ ($item->status == true ? 'bg-green-300 text-green-800' : 'bg-red-300 text-red-800') }} text-sm rounded-lg">{{ $item->status == true ? 'Aktif' : 'Tidak Aktif' }}</span>
                         </td>
                         <td class="py-2 px-4 border border-gray-400 text-center text-sm">******</td>
-                    </tr>
-                    <tr class="text-slate-700">
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">Fadhil Firoos</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">fadhilblue69@gmail.com</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">PT. Merdeka Cipta</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">Henry Carnegie</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">Jl. Kecombrang 17, Bandar Lampung</td>
                         <td class="py-2 px-4 border border-gray-400 text-center text-sm">
-                            <img src="{{ asset('images/logo.png') }}" alt="" class="w-10 h-10">
+                            @if ($item->status == 1)
+                                <a href="{{ route('admin.users-non-active', $item->id) }}" class="px-2 py-1 bg-red-300 text-red-800 text-sm rounded-lg">Nonaktifkan</a>
+                            @elseif ($item->status == 0)
+                            <a href="{{ route('admin.users-activate', $item->id) }}" class="px-2 py-1 bg-green-300 text-green-800 text-sm rounded-lg">Aktifkan</a>
+                            @endif
+                            <a href="{{ route('admin.users-edit', $item->id) }}" class="px-2 py-1 bg-blue-300 text-blue-800 text-sm rounded-lg">Edit</a>
                         </td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">11520875</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">
-                            <span class="px-2 py-1 bg-green-300 text-green-800 text-sm rounded-lg">Aktif</span>
-                        </td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">******</td>
                     </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
