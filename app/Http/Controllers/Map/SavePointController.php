@@ -16,7 +16,8 @@ class SavePointController extends Controller
     public function index()
     {
         $coordinates = Coordinate::where('unique_id', Auth::id())->get();
-        return view('mapping.index', compact('coordinates'));
+        $geoJson = $this->getGeoJson();
+        return view('mapping.index', compact('coordinates', 'geoJson'));
     }
 
     /**
@@ -24,7 +25,8 @@ class SavePointController extends Controller
      */
     public function create()
     {
-        return view('mapping.create');
+        $geoJson = $this->getGeoJson();
+        return view('mapping.create', compact('geoJson'));
     }
 
     /**
@@ -84,5 +86,31 @@ class SavePointController extends Controller
     public function destroy(Coordinate $coordinate)
     {
         //
+    }
+
+    private function getGeoJson()
+    {
+        // Query the geo_data table
+        $geoData = DB::table('geo_data')
+        ->select('id', 'name', DB::raw('ST_AsGeoJSON(geom) as geojson'))
+        ->get();
+
+        // Rebuild GeoJSON structure
+        $features = $geoData->map(function ($data) {
+            return [
+                'type' => 'Feature',
+                'properties' => [
+                    'id' => $data->id,
+                    'name' => $data->name, // Include any additional properties as needed
+                ],
+                'geometry' => json_decode($data->geojson), // Decode the geometry GeoJSON
+            ];
+        });
+
+        $geoJson = [
+            'type' => 'FeatureCollection',
+            'features' => $features,
+        ];
+        return json_encode($geoJson);
     }
 }
