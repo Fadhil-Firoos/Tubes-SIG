@@ -47,7 +47,7 @@ class UsersController extends Controller
         $request->validate([
             'nama' => 'required|min:3|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
+            'password' => 'required|min:8', 
             'nama_perusahaan' => 'required|min:3|max:255',
             'nama_pemilik' => 'required|min:3|max:255',
             'alamat' => 'required|min:3|max:255',
@@ -61,12 +61,15 @@ class UsersController extends Controller
         $user->password = bcrypt($request->password);
         $user->status = true;
         $user->save();
-
         $user->assignRole('vendor');
 
         $foto = $request->file('foto');
         $nama_foto = time() . '_' . $user->id . '.' . $foto->getClientOriginalExtension();
         $path = $foto->storeAs('vendor_photos', $nama_foto, 'public');
+
+        // $imageName = uniqid() . '.png';
+        // $path = Storage::disk('public')->put("vendor_photos", $request->file('foto'));
+        // $imageName = "storage/vendor_photos/{$imageName}";
 
         $vendor = new Vendor();
         $vendor->user_id = $user->id;
