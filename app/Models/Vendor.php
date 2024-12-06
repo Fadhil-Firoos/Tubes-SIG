@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Faker\Core\Coordinates;
 use Illuminate\Database\Eloquent\Model;
 
 class Vendor extends Model

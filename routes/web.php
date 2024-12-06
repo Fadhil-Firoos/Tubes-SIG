@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -14,9 +15,7 @@ Route::get('/map', function () {
 
 Route::middleware('auth')->group(function () {
     Route::middleware(['role:admin'])->name('admin.')->prefix('admin')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/users-create', [UsersController::class, 'create'])->name('users-create');
 
@@ -33,6 +32,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/users-activate/{id}', [UsersController::class, 'activate'])->name('users-activate');
 
     });
+
+    Route::middleware(['role:vendor'])->name('vendor.')->prefix('vendor')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    });
+
 
     Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');

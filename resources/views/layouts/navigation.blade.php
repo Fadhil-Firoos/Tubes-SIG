@@ -108,6 +108,7 @@
                         class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span> -->
                 </a>
             </li>
+            @if (auth()->user()->getRoleNames()->first() == 'admin')
             <li x-data="{ isSubMenu: false }">
                 <a href="#"
                     @click.prevent="isSubMenu = !isSubMenu"
@@ -142,6 +143,8 @@
                     <!-- Add more user-related links as needed -->
                 </ul>
             </li>
+
+            @endif
             <li>
                 <a href="{{route('logout')}}"
                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-red-200 dark:hover:text-red-600 textred group">
