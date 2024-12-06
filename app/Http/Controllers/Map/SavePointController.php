@@ -7,6 +7,8 @@ use App\Models\Coordinate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SavePointController extends Controller
 {
@@ -36,22 +38,44 @@ class SavePointController extends Controller
     {
         $request->validate([
             'longlat' => 'required',
+            'fileUpload' => 'required|string',
+            'widthMaintenance' => 'required',
+            'lengthMaintenance' => 'required',
+            'location' => 'required',
+            'startDate' => 'required',
         ]);
         
         DB::beginTransaction();
         try {
+            $fileName = null;
+            if ($request->fileUpload){
+                // Decode the Base64 image
+                $imageData = base64_decode($request->fileUpload);
+                // Generate a unique name for the image
+                $fileName = uniqid() . '.png';
+                // Save the image to the storage
+                Storage::disk('public')->put("images/{$fileName}", $imageData);
+                $fileName = "storage/images/{$fileName}";
+            }
+
             $coordinate = [
                 'unique_id' => Auth::id(),
-                'uuid' => uniqid(),
+                'uuid' => Str::uuid()->toString(),
                 'longlat' => $request->longlat,
                 'tgl_start' => now(),
+                'panjang_perbaikan' => $request->lengthMaintenance,
+                'lebar_perbaikan' => $request->widthMaintenance,
+                'nama_lokasi' => $request->location,
+                'foto' => $fileName,
+                'nama_company' => Auth::user()->name,
+                'status' => 'process',
             ];
             Coordinate::create($coordinate);
             DB::commit();
             return response()->json(['success' => 'Coordinates saved successfully']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Failed to save coordinates']);
+            return response()->json(['error' =>$e->getMessage()]);
         }
 
     }

@@ -20,57 +20,57 @@
                 <div id="map" class="rounded-lg"></div>
             </div>
             <div class="p-2 border-2 border-gray-200 bg-gray-800 rounded-xl mt-7">
-                <form action="/mapping/create" method="post" enctype="multipart/form-data">
-                    <div class="col-span-full">
-                        <label for="cover-photo" class="block text-sm/6 font-medium text-white">Cover photo</label>
-                            <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-200/25 px-6 py-10">
-                                <div class="text-center">
-                                    <svg class="mx-auto size-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                        <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
-                                    </svg>
-                                    <div class="mt-4 flex text-sm/6 text-gray-500">
-                                    <label for="file-upload" class="relative cursor-pointer rounded-md text-white hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2">
-                                        <span>Upload a file</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only">
-                                    </label>
-                                    <p class="pl-1">or drag and drop</p>
-                                </div>
-                                <p class="text-xs/5 text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                <div class="col-span-full">
+                    <label for="cover-photo" class="block text-sm/6 font-medium text-white">Cover photo</label>
+                        <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-200/25 px-6 py-10">
+                            <div class="text-center">
+                                <svg class="mx-auto size-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                    <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
+                                </svg>
+                                <div class="mt-4 flex text-sm/6 text-gray-500">
+                                <label for="file-upload" class="relative cursor-pointer rounded-md text-white hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2">
+                                    <span>Upload a file</span>
+                                    <input id="file-upload" name="file-upload" type="file" class="sr-only" required>
+                                </label>
+                                <p class="pl-1">or drag and drop</p>
                             </div>
+                            <p class="text-xs/5 text-gray-500">PNG, JPG, GIF up to 10MB</p>
                         </div>
                     </div>
-                    <div class="sm:col-span-4">
-                        <label for="widthMaintenance" class="block text-sm/6 font-medium text-white">Lebar Perbaikan (Meter)</label>
-                        <div class="mt-2">
-                            <input id="widthMaintenance" name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
-                        </div>
+                </div>
+                <div class="sm:col-span-4">
+                    <label for="widthMaintenance" class="block text-sm/6 font-medium text-white">Lebar Perbaikan (Meter)</label>
+                    <div class="mt-2">
+                        <input id="widthMaintenance" name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                     </div>
-                    <div class="sm:col-span-4">
-                        <label for="lengthMaintenance" class="block text-sm/6 font-medium text-white">Panjang Perbaikan (Meter)</label>
-                        <div class="mt-2">
-                            <input id="lengthMaintenance" name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
-                        </div>
+                </div>
+                <div class="sm:col-span-4">
+                    <label for="lengthMaintenance" class="block text-sm/6 font-medium text-white">Panjang Perbaikan (Meter)</label>
+                    <div class="mt-2">
+                        <input id="lengthMaintenance" name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                     </div>
-                    <div class="sm:col-span-4">
-                        <label for="location" class="block text-sm/6 font-medium text-white">Lokasi Pengerjaan</label>
-                        <div class="mt-2">
-                            <input id="location" name="location" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
-                        </div>
+                </div>
+                <div class="sm:col-span-4">
+                    <label for="location" class="block text-sm/6 font-medium text-white">Lokasi Pengerjaan</label>
+                    <div class="mt-2">
+                        <input id="lokasi_pengerjaan" name="lokasi_pengerjaan" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                     </div>
-                    <div class="sm:col-span-4">
-                        <label for="companyName" class="block text-sm/6 font-medium text-white">Nama Perusahaan</label>
-                        <div class="mt-2">
-                            <input id="companyName" name="companyName" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
-                        </div>
+                </div>
+                <div class="sm:col-span-4">
+                    <label for="companyName" class="block text-sm/6 font-medium text-white">Nama Perusahaan</label>
+                    <div class="mt-2">
+                        <input id="companyName"
+                        value="{{ Auth::user()->name }}" disabled
+                        name="companyName" type="text" class="block w-full disabled:bg-gray-800 disabled:text-white rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                     </div>
-                    <div class="sm:col-span-4">
-                        <label for="startDate" class="block text-sm/6 font-medium text-white" >Tanggal Mulai</label>
-                        <input id="startDate" name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
-                    </div>
-                    <div class="flex items-center justify-center pt-7">
-                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
-                    </div>
-                </form>
+                </div>
+                <div class="sm:col-span-4">
+                    <label for="startDate" class="block text-sm/6 font-medium text-white" >Tanggal Mulai</label>
+                    <input id="startDate" name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                </div>
+                <div class="flex items-center justify-center pt-7">
+                    <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
+                </div>
             </div>
         </div>
     </div>
@@ -133,6 +133,21 @@
             });
         });
 
+        document.getElementById('file-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64String = e.target.result.split(',')[1]; // Get only the base64 part
+                    console.log("Base64 Image String:", base64String);
+
+                    // Attach the Base64 string to the button's dataset for upload
+                    document.getElementById('saveButton').dataset.imageBase64 = base64String;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         // Function to save coordinates to the database
         document.getElementById('saveButton').addEventListener('click', function() {
             // Make a POST request to your Laravel backend
@@ -140,17 +155,32 @@
                 alert('Please add at least two coordinates to save!');
                 return;
             }
+            const base64String = this.dataset.imageBase64;
+
+            if (!base64String) {
+                alert('Please select an image first!');
+                return;
+            }
+
             fetch(`{{ route('mapping.store') }}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}' // CSRF token for security
                 },
-                body: JSON.stringify({ longlat: pathCoordinates })
+                body: JSON.stringify({ 
+                    longlat: pathCoordinates,
+                    fileUpload : base64String,
+                    widthMaintenance: document.getElementById('widthMaintenance').value,
+                    lengthMaintenance: document.getElementById('lengthMaintenance').value,
+                    location: document.getElementById('lokasi_pengerjaan').value,
+                    companyName: document.getElementById('companyName').value,
+                    startDate: document.getElementById('startDate').value
+                })
             })
-            .then(response => response.json())
-            .then(data => alert('Coordinates saved successfully!'))
-            .catch(error => console.error('Error:', error));
+            // .then(response => response.json())
+            // .then(data => alert('Coordinates saved successfully!'))
+            // .catch(error => console.error('Error:', error));
             console.log(pathCoordinates);
         });
     </script>
