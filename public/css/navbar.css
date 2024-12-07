@@ -1,8 +1,8 @@
 .navbar {
     /* position: fixed; */
-    z-index: 2000;
+    z-index: 40;
 }
 
 .sidebar {
-    z-index: 1500;
+    z-index: 30;
 }
