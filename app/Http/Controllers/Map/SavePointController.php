@@ -93,6 +93,10 @@ class SavePointController extends Controller
      */
     public function edit(Coordinate $coordinate, string $uuid)
     {
+        if (strlen($uuid) < 30) {
+            return redirect()->route('mapping.index');
+        }
+
         $coordinate = Coordinate::where('uuid', $uuid)->first();
         if (!$coordinate) {
             return redirect()->route('mapping.index');
