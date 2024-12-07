@@ -55,7 +55,7 @@ class SavePointController extends Controller
                 $fileName = uniqid() . '.png';
                 // Save the image to the storage
                 Storage::disk('public')->put("images/{$fileName}", $imageData);
-                $fileName = "storage/images/{$fileName}";
+                $fileName = "/storage/images/{$fileName}";
             }
 
             $coordinate = [
@@ -91,9 +91,15 @@ class SavePointController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Coordinate $coordinate)
+    public function edit(Coordinate $coordinate, string $uuid)
     {
-        //
+        $coordinate = Coordinate::where('uuid', $uuid)->first();
+        if (!$coordinate) {
+            return redirect()->route('mapping.index');
+        }
+
+        $geoJson = $this->getGeoJson();
+        return view('mapping.edit', compact('coordinate', 'geoJson', 'uuid'));
     }
 
     /**
@@ -101,7 +107,7 @@ class SavePointController extends Controller
      */
     public function update(Request $request, Coordinate $coordinate)
     {
-        //
+        return redirect()->back();
     }
 
     /**

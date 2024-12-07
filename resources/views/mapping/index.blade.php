@@ -58,7 +58,7 @@
             polyline.bindPopup(`
                 <strong>Location Name:</strong> ${locationName}<br>
                 <strong>Status:</strong> ${status}<br>
-                <a href="${url}" target="_blank">More Info</a>
+                <a href="/mapping/${url}" target="_blank">More Info</a>
             `);
         @endforeach
     </script>

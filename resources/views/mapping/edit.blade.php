@@ -27,11 +27,9 @@
                     <label for="cover-photo" class="block text-sm/6 font-medium">Cover photo</label>
                     <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-200/25 px-6 py-10">
                         <div class="text-center">
-                            <svg id="input-image" class="mx-auto size-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
-                            </svg>
                             <!-- Tempat untuk preview gambar -->
                             <div id="preview-container" class="mt-4">
+                                <img id="preview-image" src="{{$coordinate->foto}}" alt="Preview" class="lg:w-96 rounded-lg" />
                                 <img id="preview-image" src="" alt="Preview" class="lg:w-96 rounded-lg hidden" />
                             </div>
                             <div class="mt-4 flex justify-center items-center text-sm/6 text-gray-500">
@@ -48,19 +46,25 @@
                 <div class="sm:col-span-4">
                     <label for="widthMaintenance" class="block text-sm/6 font-medium">Lebar Perbaikan (Meter)</label>
                     <div class="mt-2">
-                        <input id="widthMaintenance" name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        <input id="widthMaintenance"
+                        value="{{ $coordinate->lebar_perbaikan }}"
+                        name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                     </div>
                 </div>
                 <div class="sm:col-span-4">
                     <label for="lengthMaintenance" class="block text-sm/6 font-medium">Panjang Perbaikan (Meter)</label>
                     <div class="mt-2">
-                        <input id="lengthMaintenance" name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        <input id="lengthMaintenance"
+                        value="{{ $coordinate->panjang_perbaikan }}"
+                        name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                     </div>
                 </div>
                 <div class="sm:col-span-4">
                     <label for="location" class="block text-sm/6 font-medium">Lokasi Pengerjaan</label>
                     <div class="mt-2">
-                        <input id="lokasi_pengerjaan" name="lokasi_pengerjaan" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        <input id="lokasi_pengerjaan"
+                        value="{{ $coordinate->nama_lokasi }}"
+                        name="lokasi_pengerjaan" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                     </div>
                 </div>
                 <div class="sm:col-span-4">
@@ -73,7 +77,9 @@
                 </div>
                 <div class="sm:col-span-4">
                     <label for="startDate" class="block text-sm/6 font-medium" >Tanggal Mulai</label>
-                    <input id="startDate" name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                    <input id="startDate"
+                    value="{{ date('Y-m-d', strtotime($coordinate->tgl_start)) }}"
+                    name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                 </div>
                 <div class="flex items-center justify-center pt-7">
                     <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
@@ -109,6 +115,24 @@
                 }
             }
         }).addTo(map);
+
+        var points = {!! json_encode($coordinate->longlat) !!};
+        var locationName = "{{ $coordinate->nama_lokasi }}";
+        var status = "{{ $coordinate->status }}";
+        var url = "{{ $coordinate->uuid }}";
+
+        // Create a polyline from the points
+        var polyline = L.polyline(points, {
+            color: "#000",
+            weight: 5,
+            opacity: 1
+        }).addTo(map);
+
+        polyline.bindPopup(`
+            <strong>Location Name:</strong> ${locationName}<br>
+            <strong>Status:</strong> ${status}<br>
+            <a href="/mapping/${url}" target="_blank">More Info</a>
+        `);
 
         // Array to store coordinates and markers
         var pathCoordinates = [];
@@ -175,7 +199,7 @@
                 return;
             }
 
-            fetch(`{{ route('mapping.store') }}`, {
+            fetch(`{{ route('mapping.update', $uuid) }}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
