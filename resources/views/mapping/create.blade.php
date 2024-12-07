@@ -20,63 +20,63 @@
         </div>
         <div>
             <div class="p-2 border-2 border-gray-200 border-dashed rounded-lg mt-3">
-                <div id="map" class="rounded-lg"></div>
+                <div id="map" class="rounded-lg z-0"></div>
             </div>
-            <div class="p-2 border-2 border-gray-200 border-dashed rounded-xl mt-7">
-                <div class="col-span-full">
-                    <label for="cover-photo" class="block text-sm/6 font-medium">Cover photo</label>
-                    <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-200/25 px-6 py-10">
+            <div class="px-6 py-2 border-2 border-gray-200 border-dashed rounded-xl mt-7 grid grid-cols-1 gap-y-3.5">
+                <div class="">
+                    <label for="cover-photo" class="block text-base font-medium after:content-['*'] after:ml-0.5 after:text-red-500">Cover photo</label>
+                    <div class="mt-1 flex justify-center rounded-lg bg-slate-200 border border-dashed border-gray-800 px-6 py-10">
                         <div class="text-center">
-                            <svg id="input-image" class="mx-auto size-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
+                            <svg id="input-image" class="mx-auto size-12  text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                <path fill="#6366f1" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 716.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
                             </svg>
                             <!-- Tempat untuk preview gambar -->
                             <div id="preview-container" class="mt-4">
                                 <img id="preview-image" src="" alt="Preview" class="lg:w-96 rounded-lg hidden" />
                             </div>
-                            <div class="mt-4 flex justify-center items-center text-sm/6 text-gray-500">
+                            <div class="mt-4 flex justify-center items-center text-sm text-gray-500">
                                 <label for="file-upload" class="relative cursor-pointer rounded-md text-black hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2">
-                                    <span>Upload a file</span>
+                                    <span class="text-xl font-bold">Upload Foto</span>
                                     <input id="file-upload" name="file-upload" type="file" class="sr-only" required>
                                 </label>
                                 <!-- <p class="pl-1">or drag and drop</p> -->
                             </div>
-                            <p class="text-xs/5 text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                            <p class="text-xs font-medium text-gray-500">PNG, JPG, GIF up to 10MB</p>
                         </div>
                     </div>
                 </div>
-                <div class="sm:col-span-4">
-                    <label for="widthMaintenance" class="block text-sm/6 font-medium">Lebar Perbaikan (Meter)</label>
-                    <div class="mt-2">
-                        <input id="widthMaintenance" name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                <div class="">
+                    <label for="widthMaintenance" class="block text-base font-medium after:content-['*'] after:ml-0.5 after:text-red-500">Lebar Perbaikan (Meter)</label>
+                    <div class="mt-1">
+                        <input id="widthMaintenance" name="widthMaintenance" type="number" placeholder="Masukan lebar perbaikan" class="placeholder:text-sm block w-full rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm">
                     </div>
                 </div>
-                <div class="sm:col-span-4">
-                    <label for="lengthMaintenance" class="block text-sm/6 font-medium">Panjang Perbaikan (Meter)</label>
-                    <div class="mt-2">
-                        <input id="lengthMaintenance" name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                <div class="">
+                    <label for="lengthMaintenance" class="block text-base font-medium after:content-['*'] after:ml-0.5 after:text-red-500">Panjang Perbaikan (Meter)</label>
+                    <div class="mt-1">
+                        <input id="lengthMaintenance" name="lengthMaintenance" type="number" placeholder="Masukan panjang perbaikan" class="placeholder:text-sm block w-full rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm">
                     </div>
                 </div>
-                <div class="sm:col-span-4">
-                    <label for="location" class="block text-sm/6 font-medium">Lokasi Pengerjaan</label>
-                    <div class="mt-2">
-                        <input id="lokasi_pengerjaan" name="lokasi_pengerjaan" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                <div class="">
+                    <label for="location" class="block text-base font-medium after:content-['*'] after:ml-0.5 after:text-red-500">Lokasi Pengerjaan</label>
+                    <div class="mt-1">
+                        <input id="lokasi_pengerjaan" name="lokasi_pengerjaan" type="text" placeholder="Masukan lokasi pengerjaan" class="placeholder:text-sm block w-full rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm">
                     </div>
                 </div>
-                <div class="sm:col-span-4">
-                    <label for="companyName" class="block text-sm/6 font-medium">Nama Perusahaan</label>
-                    <div class="mt-2">
+                <div class="">
+                    <label for="companyName" class="block text-base font-medium after:content-['*'] after:ml-0.5 after:text-red-500">Nama Perusahaan</label>
+                    <div class="mt-1">
                         <input id="companyName"
                         value="{{ Auth::user()->name }}" disabled
-                        name="companyName" type="text" class="block w-full disabled:bg-gray-500 disabled:text-black rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        name="companyName" type="text" placeholder="Masukan lebar perbaikan" class="placeholder:text-sm block w-full disabled:bg-gray-400 disabled:text-slate-800 rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
                     </div>
                 </div>
-                <div class="sm:col-span-4">
-                    <label for="startDate" class="block text-sm/6 font-medium" >Tanggal Mulai</label>
-                    <input id="startDate" name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                <div class="">
+                    <label for="startDate" class="block text-base font-medium after:content-['*'] after:ml-0.5 after:text-red-500">Tanggal Mulai</label>
+                    <input id="startDate" name="startDate" type="date" placeholder="Masukan lebar perbaikan" class="placeholder:text-sm block w-full rounded-md border-0 py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm">
                 </div>
-                <div class="flex items-center justify-center pt-7">
-                    <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
+                <div class="flex items-center justify-end pt-7">
+                    <button class="bg-blue-600 px-4 py-2 rounded-lg text-white text-base font-semibold" id="saveButton">Simpan Koordinat</button>
                 </div>
             </div>
         </div>
@@ -181,7 +181,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}' // CSRF token for security
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     longlat: pathCoordinates,
                     fileUpload : base64String,
                     widthMaintenance: document.getElementById('widthMaintenance').value,
