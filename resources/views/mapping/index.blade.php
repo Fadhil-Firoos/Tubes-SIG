@@ -11,17 +11,17 @@
             width: 100%;
         }
     </style>
-    <div class="p-4 sm:ml-64" x-data="{ detailVendorOpen: false, statusLaporan: ['Reported' , 'Process', 'Rejected', 'Accepted'] }">
+    <div class="p-4 sm:ml-64" x-data="{ detailVendorOpen: false, editDetail: false, statusLaporan: ['Reported', 'Process', 'Rejected', 'Accepted'] }">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-l mt-14">
             <div id="map" class="z-0"></div>
             <div class="mt-4">
                 <table class="w-full table-auto">
                     <thead>
                         <tr class="text-white bg-slate-700">
-                            <th class="py-2 px-4 border border-gray-400 text-center">Nama Vendor</th>
-                            <th class="py-2 px-4 border border-gray-400 text-center">Nama Proyek</th>
-                            <th class="py-2 px-4 border border-gray-400 text-center">Lokasi Proyek</th>
-                            <th class="py-2 px-4 border border-gray-400 text-center">Aksi</th>
+                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Nama Vendor</th>
+                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Nama Proyek</th>
+                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Lokasi Proyek</th>
+                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,7 +31,7 @@
                             <td class="py-2 px-4 border border-gray-400 text-center">Jalan sukarame no 4</td>
                             <td class="py-3 px-1 border border-gray-400 text-center">
                                 <span
-                                    class="bg-teal-300 px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
+                                    class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
                                     @click="detailVendorOpen = true">Detail</span>
                             </td>
                         </tr>
@@ -39,8 +39,8 @@
                 </table>
                 <!-- Modal -->
                 <div x-show="detailVendorOpen"
-                    class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center" x-cloak>
-                    <div class="bg-white w-full lg:max-w-max md:max-w-2xl mx-auto p-6 rounded-lg"
+                    class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center" x-cloak x-transition>
+                    <div class="bg-white w-full lg:max-w-max md:max-w-2xl h-fit max-h-[70%] md:max-h-[80%] lg:max-h-[70%] xl:max-h-[80%] mx-auto p-6 rounded-lg overflow-y-scroll"
                         @click.away="detailVendorOpen = false" @click.stop>
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-lg font-bold">Detail Vendor</h2>
@@ -66,16 +66,20 @@
                                 <span class="w-full">Status</span>
                                 <span class="w-full text-base font-normal">:
                                     <template x-if="statusLaporan.includes('Reported')">
-                                        <span class="bg-gray-200 px-4 py-2 rounded-lg text-sm text-gray-800 font-semibold cursor-pointer">Reported</span>
+                                        <span
+                                            class="bg-gray-200 px-4 py-2 rounded-lg text-sm text-gray-800 font-semibold">Reported</span>
                                     </template>
                                     <template x-if="statusLaporan.includes('Process')">
-                                        <span class="bg-amber-200 px-4 py-2 rounded-lg text-sm text-amber-800 font-semibold cursor-pointer">Process</span>
+                                        <span
+                                            class="bg-amber-200 px-4 py-2 rounded-lg text-sm text-amber-800 font-semibold">Process</span>
                                     </template>
                                     <template x-if="statusLaporan.includes('Rejected')">
-                                        <span class="bg-red-200 px-4 py-2 rounded-lg text-sm text-red-800 font-semibold cursor-pointer">Rejected</span>
+                                        <span
+                                            class="bg-red-200 px-4 py-2 rounded-lg text-sm text-red-800 font-semibold">Rejected</span>
                                     </template>
                                     <template x-if="statusLaporan.includes('Accepted')">
-                                        <span class="bg-emerald-200 px-4 py-2 rounded-lg text-sm text-emerald-800 font-semibold cursor-pointer">Accepted</span>
+                                        <span
+                                            class="bg-emerald-200 px-4 py-2 rounded-lg text-sm text-emerald-800 font-semibold">Accepted</span>
                                     </template>
                                 </span>
                             </div>
@@ -99,6 +103,73 @@
                                 <span class="w-full">Tanggal Selesai</span>
                                 <span class="w-full text-base font-normal">: 31 Desember 2024</span>
                             </div>
+                            <form class="w-full md:col-span-2 space-y-2" x-show="editDetail" x-cloak x-transition>
+                                <div class="col-span-2 py-2 text-center bg-amber-100 rounded-md">
+                                    <span class="text-amber-800 text-lg font-semibold">Ubah data anda dibawah ini!</span>
+                                </div>
+                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
+                                    <span class="w-full">Nama Proyek</span>
+                                    <input type="text" id="" name=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Masukan nama proyek" required />
+                                </div>
+                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
+                                    <span class="w-full">Nama Perusahaan</span>
+                                    <input type="text" id="" name=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Masukan nama perusahaan" required />
+                                </div>
+                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
+                                    <span class="w-full">Lokasi Proyek</span>
+                                    <input type="text" id="" name=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Masukan lokasi proyek" required />
+                                </div>
+                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
+                                    <span class="w-full">Panjang Perbaikan</span>
+                                    <input type="text" id="" name=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Masukan panjang perbaikan" required />
+                                </div>
+                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
+                                    <span class="w-full">Lebar Perbaikan</span>
+                                    <input type="text" id="" name=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Masukan lebar perbaikan" required />
+                                </div>
+                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
+                                    <span class="w-full">Longitude Latitude</span>
+                                    <input type="text" id="" name=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Masukan longitude latitude" required />
+                                </div>
+                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
+                                    <span class="w-full">Tanggal Mulai</span>
+                                    <input type="date" id="" name=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Masukan tanggal mulai" required />
+                                </div>
+                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
+                                    <span class="w-full">Tanggal Selesai</span>
+                                    <input type="date" id="" name=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Masukan tanggal selesai" required />
+                                </div>
+                            </form>
+                            <template x-if="statusLaporan.includes('Rejected')">
+                                <div class="col-span-1 md:col-span-2 flex justify-end text-base font-medium w-full">
+                                    <button type="button" class="bg-blue-600 px-4 py-2 rounded-lg text-white text-base font-semibold" @click="editDetail = true">
+                                        Edit
+                                    </button>
+                                </div>
+                            </template>
+                            <template x-if="editDetail">
+                                <div class="col-span-1 md:col-span-2 flex justify-end text-base font-medium w-full">
+                                    <button type="submit" class="bg-blue-600 px-4 py-2 rounded-lg text-white text-base font-semibold" @click="editDetail = !editDetail">
+                                        Simpan
+                                    </button>
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>
