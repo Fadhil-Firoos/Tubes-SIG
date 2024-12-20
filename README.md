@@ -73,4 +73,41 @@ Kunjungi website kami di: [http://geopala.my.id](http://geopala.my.id)
    ```bash
    git clone https://github.com/Fadhil-Firoos/Tubes-SIG.git
 
+2. Masuk ke direktori proyek:
+    ```bash
+    cd Tubes-SIG
+    
+3. Install dependensi menggunakan Composer: Pastikan Anda telah menginstal Composer. Jika belum, Anda dapat mengunduhnya dari [getcomposer.org](https://getcomposer.org/).
+    ```bash
+       composer install
+    ```
 
+4. Buat file .env dan sesuaikan konfigurasi database:
+    ```bash
+    cp .env.example .env
+    ```
+    
+    - Edit file .env menggunakan editor teks dan sesuaikan pengaturan database Anda:
+      ```bash
+      DB_CONNECTION=pgsql
+        DB_HOST=127.0.0.1
+        DB_PORT=5432
+        DB_DATABASE=nama_database
+        DB_USERNAME=nama_pengguna
+        DB_PASSWORD=kata_sandi
+      ```
+      
+5. Generate key aplikasi:
+    ```bash
+    php artisan key:generate
+
+6. Jalankan migrasi database: Pastikan PostgreSQL dan PostGIS telah terinstal dan dikonfigurasi dengan benar. Kemudian jalankan perintah berikut untuk melakukan migrasi:
+    ```bash
+    php artisan migrate
+
+7. Jalankan server lokal: Setelah migrasi selesai, Anda dapat menjalankan server lokal dengan perintah:
+    ```bash
+    php artisan serve
+
+8. Akses aplikasi: Buka browser Anda dan akses aplikasi di http://localhost:8000.
+    
