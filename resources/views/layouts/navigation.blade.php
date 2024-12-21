@@ -61,7 +61,7 @@
                 </li>
                 <li x-data="{ isSubMenu: false }">
                     <a href="#" @click.prevent="isSubMenu = !isSubMenu"
-                        class="{{ Route::currentRouteName() == 'mapping.index' || Route::currentRouteName() == 'mapping.create' ? 'bg-gray-100 dark:bg-gray-700' : '' }}
+                        class="{{ (Request::routeIs('mapping.*') ? 'bg-gray-100 dark:bg-gray-700' : '') }}
                         flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -88,13 +88,13 @@
                     <ul x-show="isSubMenu" class="space-y-1 mt-2" x-transition x-cloak>
                         <li>
                             <a href="{{ route('mapping.index') }}"
-                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                class="{{ (Request::routeIs('mapping.index') ? 'bg-gray-100 dark:bg-gray-700' : '') }} flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <span class="flex-1 ms-3 whitespace-nowrap">Data Laporan</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('mapping.create') }}"
-                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                class="{{ (Request::routeIs('mapping.create') ? 'bg-gray-100 dark:bg-gray-700' : '') }} flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <span class="flex-1 ms-3 whitespace-nowrap">Create Laporan</span>
                             </a>
                         </li>

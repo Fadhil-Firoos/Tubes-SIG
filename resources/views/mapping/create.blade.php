@@ -89,7 +89,7 @@
         var map = L.map('map').setView([-5.37949832999664, 105.29666579508937], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
+            attribution: '© Geopala'
         }).addTo(map);
 
         // Style function to define the line color and other styles
@@ -195,7 +195,7 @@
                 })
             })
             .then(response => response.json())
-            .then(data => alert('Coordinates saved successfully!'))
+            .then(window.location.href = "{{ route('mapping.index') }}")
             // .catch(error => console.error('Error:', error)); change to alert error message max 1000 character
             .catch(error => alert('Error:',  error.message.substring(0, 1000)));
             console.log(pathCoordinates);

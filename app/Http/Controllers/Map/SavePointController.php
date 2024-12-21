@@ -15,9 +15,37 @@ class SavePointController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $coordinates = Coordinate::where('unique_id', Auth::id())->get();
+        $status = $request->query('status', null);
+        $startDate = $request->query('start_date', null);
+
+        // Sanitize query parameters
+        $status = in_array($status, ['process', 'reported', 'accepted', 'rejected']) ? $status : null;
+        $startDate = $startDate ? trim($startDate) : null;
+
+        // Base query
+        $query = Coordinate::query();
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        // Validate and parse the date
+        if ($startDate) {
+            try {
+                $parsedDate = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $startDate);
+                $query->where('tgl_start', '>=', $parsedDate);
+            } catch (\Exception $e) {
+                return back()->withErrors(['start_date' => 'Invalid start date format']);
+            }
+        }
+        
+        if (auth()->user()->hasRole('admin')) {
+            $coordinates = $query->latest()->get();
+        } else {
+            $coordinates = $query->where('unique_id', Auth::id())->latest()->get();
+        }
+        
         $geoJson = $this->getGeoJson();
         return view('mapping.index', compact('coordinates', 'geoJson'));
     }
@@ -49,13 +77,7 @@ class SavePointController extends Controller
         try {
             $fileName = null;
             if ($request->fileUpload){
-                // Decode the Base64 image
-                $imageData = base64_decode($request->fileUpload);
-                // Generate a unique name for the image
-                $fileName = uniqid() . '.png';
-                // Save the image to the storage
-                Storage::disk('public')->put("images/{$fileName}", $imageData);
-                $fileName = "/storage/images/{$fileName}";
+                $fileName = $this->fileUpload($request);
             }
 
             $coordinate = [
@@ -77,7 +99,6 @@ class SavePointController extends Controller
             DB::rollBack();
             return response()->json(['error' =>$e->getMessage()]);
         }
-
     }
 
     /**
@@ -109,9 +130,45 @@ class SavePointController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Coordinate $coordinate)
+    public function update(Request $request, string $uuid)
     {
-        return redirect()->back();
+        $request->validate([
+            'longlat' => 'required|array',
+            'widthMaintenance' => 'required|numeric',
+            'lengthMaintenance' => 'required|numeric',
+            'location' => 'required|string',
+            'startDate' => 'required|date',
+            'status' => 'required|in:process,reported,accepted,rejected',
+        ]);
+
+        DB::beginTransaction();
+        try{
+            $uuid = trim(strip_tags($uuid));
+            $coordinate = Coordinate::where('uuid', $uuid)->first();
+            if (!$coordinate) {
+                return response()->json(['error' => 'Coordinate not found'], 404);
+            }
+    
+            $fileName = $coordinate->foto;
+            if ($request->fileUpload){
+                $fileName = $this->fileUpload($request);
+            }
+    
+            $coordinate->update([
+                'longlat' => $request->longlat,
+                'tgl_start' => $request->startDate,
+                'panjang_perbaikan' => $request->lengthMaintenance,
+                'lebar_perbaikan' => $request->widthMaintenance,
+                'nama_lokasi' => $request->location,
+                'foto' => $fileName,
+                'status' => $request->status,
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Update successful!'], 200);
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -120,6 +177,18 @@ class SavePointController extends Controller
     public function destroy(Coordinate $coordinate)
     {
         //
+    }
+
+    private function fileUpload($request)
+    {
+        // Decode the Base64 image
+        $imageData = base64_decode($request->fileUpload);
+        // Generate a unique name for the image
+        $fileName = uniqid() . '.png';
+        // Save the image to the storage
+        Storage::disk('public')->put("images/{$fileName}", $imageData);
+        $fileName = "/storage/images/{$fileName}";
+        return $fileName;
     }
 
     private function getGeoJson()

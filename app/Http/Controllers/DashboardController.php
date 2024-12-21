@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coordinate;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -13,10 +16,17 @@ class DashboardController extends Controller
     public function index()
     {
         if(auth()->user()->hasRole('admin')) {
-            $vendors = User::role('vendor')->get();
-            return view('dashboard');
-        }else if(auth()->user()->hasRole('vendor')) {
-            return view('dashboard');
+            $vendors = User::role('vendor')->with('coordinatesVendor')->get();
+            $coordinates = Coordinate::all();
+            return view('dashboard', compact('vendors', 'coordinates'));
+        }else {
+            $coordinates = Coordinate::where('unique_id', Auth::id())->get();
+            // count of each status 'process', 'reported', 'accepted', 'rejected'
+            $countStatus = Coordinate::select('status', DB::raw('count(*) as total'))
+                ->where('unique_id', Auth::id())
+                ->groupBy('status')
+                ->get();
+            return view('dashboard', compact('coordinates'));
         }
     }
 

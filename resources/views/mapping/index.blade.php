@@ -11,30 +11,58 @@
             width: 100%;
         }
     </style>
-    <div class="p-4 sm:ml-64" x-data="{ detailVendorOpen: false, editDetail: false, statusLaporan: ['Reported', 'Process', 'Rejected', 'Accepted'] }">
+    <div class="p-4 md:ml-64" x-data="{ detailVendorOpen: false, editDetail: false, statusLaporan: ['Reported', 'Process', 'Rejected', 'Accepted'] }">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-l mt-14">
-            <div id="map" class="z-0"></div>
-            <div class="mt-4">
+            <form method="GET" action="{{ url()->current() }}" id="query-form" class="my-3 flex max-md:flex-col gap-4 md:gap-10">
+                <!-- Status Dropdown -->
+                <div>
+                    <label for="status">Status:</label>
+                    <select name="status" id="status" onchange="updateQuery()">
+                        <option value="">Select Status</option>
+                        <option value="reported" {{ request('status') === 'reported' ? 'selected' : '' }}>Reported</option>
+                        <option value="process" {{ request('status') === 'process' ? 'selected' : '' }}>Process</option>
+                        <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>Accepted</option>
+                        <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Rejected</option>
+                    </select>
+                </div>
+                <!-- Start Date Input -->
+                <div>
+                    <label for="start_date">Start Date:</label>
+                    <input 
+                        type="datetime-local" 
+                        name="start_date" 
+                        id="start_date" 
+                        value="{{ request('start_date') ? \Carbon\Carbon::parse(request('start_date'))->format('Y-m-d\TH:i') : '' }}" 
+                        onchange="updateQuery()"
+                    >
+                </div>
+            </form>
+            <div id="map" class="rounded-lg z-0"></div>
+            <div class="mt-4 overflow-x-scroll">
                 <table class="w-full table-auto">
                     <thead>
                         <tr class="text-white bg-slate-700">
                             <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Nama Vendor</th>
-                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Nama Proyek</th>
                             <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Lokasi Proyek</th>
+                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Status</th>
                             <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-gray-700">
-                            <td class="py-2 px-4 border border-gray-400 text-center">PT. Waskita Karya</td>
-                            <td class="py-2 px-4 border border-gray-400 text-center">Perbaikan Jalan Sukarame</td>
-                            <td class="py-2 px-4 border border-gray-400 text-center">Jalan sukarame no 4</td>
-                            <td class="py-3 px-1 border border-gray-400 text-center">
-                                <span
-                                    class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
-                                    @click="detailVendorOpen = true">Detail</span>
-                            </td>
-                        </tr>
+                        @foreach ($coordinates as $coord)
+                            <tr class="text-gray-700">
+                                <td class="py-2 px-4 border border-gray-400 text-center">{{ $coord->nama_company }}</td>
+                                <td class="py-2 px-4 border border-gray-400 text-center">{{ $coord->nama_lokasi }}</td>
+                                <td class="py-2 px-4 border border-gray-400 text-center">{{ $coord->status }}</td>
+                                <td class="py-3 px-1 border border-gray-400 text-center">
+                                    <span
+                                        class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
+                                        {{-- @click="detailVendorOpen = true" --}}
+                                        onclick="window.location.href = '{{ route('mapping.edit', $coord->uuid) }}'"
+                                        >Detail</span>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
                 <!-- Modal -->
@@ -181,7 +209,7 @@
         var map = L.map('map').setView([-5.37949832999664, 105.29666579508937], 13.5);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
+            attribution: '© Geopala'
         }).addTo(map);
 
         // Style function for GeoJSON data
@@ -221,5 +249,26 @@
                 <a href="/mapping/edit/${url}" target="_blank">More Info</a>
             `);
         @endforeach
+
+        function updateQuery() {
+            const form = document.getElementById('query-form');
+            const url = new URL(window.location.href);
+            const status = document.getElementById('status').value;
+            const startDate = document.getElementById('start_date').value;
+
+            if (status) {
+                url.searchParams.set('status', status);
+            } else {
+                url.searchParams.delete('status');
+            }
+
+            if (startDate) {
+                url.searchParams.set('start_date', startDate);
+            } else {
+                url.searchParams.delete('start_date');
+            }
+
+            window.location.href = url.toString();
+        }
     </script>
 </x-app-layout>

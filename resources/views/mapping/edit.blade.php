@@ -12,15 +12,12 @@
         }
     </style>
     <div class="p-4 mt-14 sm:ml-64">
-        <!-- <div class="flex items-center justify-center">
-            <h3 class="text-2xl font-bold">BUAT LAPORAN </h3>
-        </div> -->
         <div class="flex items-center justify-center mb-4">
-            <span class="text-xl font-bold">Buat Laporan</span>
+            <span class="text-xl font-bold">Edit Laporan</span>
         </div>
         <div>
             <div class="p-2 border-2 border-gray-200 border-dashed rounded-lg mt-3">
-                <div id="map" class="rounded-lg"></div>
+                <div id="map" class="rounded-lg z-0"></div>
             </div>
             <div class="p-2 border-2 border-gray-200 border-dashed rounded-xl mt-7">
                 <div class="col-span-full">
@@ -28,14 +25,14 @@
                     <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-200/25 px-6 py-10">
                         <div class="text-center">
                             <!-- Tempat untuk preview gambar -->
-                            <div id="preview-container" class="mt-4">
+                            <div id="preview-container" class="mt-4 flex place-content-center">
                                 <img id="preview-image" src="{{$coordinate->foto}}" alt="Preview" class="lg:w-96 rounded-lg" />
                                 <img id="preview-image" src="" alt="Preview" class="lg:w-96 rounded-lg hidden" />
                             </div>
                             <div class="mt-4 flex justify-center items-center text-sm/6 text-gray-500">
                                 <label for="file-upload" class="relative cursor-pointer rounded-md text-black hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2">
                                     <span>Upload a file</span>
-                                    <input id="file-upload" name="file-upload" type="file" class="sr-only" required>
+                                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
                                 </label>
                                 <!-- <p class="pl-1">or drag and drop</p> -->
                             </div>
@@ -71,7 +68,7 @@
                     <label for="companyName" class="block text-sm/6 font-medium">Nama Perusahaan</label>
                     <div class="mt-2">
                         <input id="companyName"
-                        value="{{ Auth::user()->name }}" disabled
+                        value="{{ $coordinate->nama_company }}" disabled
                         name="companyName" type="text" class="block w-full disabled:bg-gray-500 disabled:text-black rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                     </div>
                 </div>
@@ -81,6 +78,16 @@
                     value="{{ date('Y-m-d', strtotime($coordinate->tgl_start)) }}"
                     name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                 </div>
+                <div class="sm:col-span-4">
+                    <label for="status" class="block text-sm/6 font-medium">Status</label>
+                    <select id="status" name="status" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        <option value="reported" {{ $coordinate->status == 'reported' ? 'selected' : '' }}>Reported</option>
+                        <option value="process" {{ $coordinate->status == 'process' ? 'selected' : '' }}>Process</option>
+                        <option value="accepted" {{ $coordinate->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
+                        <option value="rejected" {{ $coordinate->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                    </select>
+                </div>
+
                 <div class="flex items-center justify-center pt-7">
                     <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
                 </div>
@@ -89,86 +96,79 @@
     </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
+        // Initialize map
         var map = L.map('map').setView([-5.37949832999664, 105.29666579508937], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
+            attribution: '© Geopala',
         }).addTo(map);
 
-        // Style function to define the line color and other styles
-        function styleFeature(feature) {
-            return {
-                color: "#FF0000", // Red color
-                weight: 3,         // Line thickness
-                opacity: 0.6       // Line opacity
-            };
-        }
+        // Normalize pathCoordinates from the database
+        var pathCoordinates = {!! json_encode($coordinate->longlat) !!};
 
-        const geojsonData = {!! $geoJson !!};
+        // Convert to array format if needed
+        pathCoordinates = pathCoordinates.map(coord => 
+            Array.isArray(coord) ? coord : [coord.lat, coord.lng]
+        );
 
-        // Add GeoJSON data to map
-        L.geoJSON(geojsonData, {
-            style: styleFeature,
-            onEachFeature: function(feature, layer) {
-                if (feature.properties && feature.properties.name) {
-                    layer.bindPopup("<b>" + feature.properties.name + "</b>");
-                }
-            }
+        // Render the polyline with markers
+        var polyline = L.polyline(pathCoordinates, {
+            color: 'blue',
+            weight: 4,
+            opacity: 0.7
         }).addTo(map);
 
-        var points = {!! json_encode($coordinate->longlat) !!};
-        var locationName = "{{ $coordinate->nama_lokasi }}";
-        var status = "{{ $coordinate->status }}";
-        var url = "{{ $coordinate->uuid }}";
-
-        // Create a polyline from the points
-        var polyline = L.polyline(points, {
-            color: "#000",
-            weight: 5,
-            opacity: 1
-        }).addTo(map);
-
-        polyline.bindPopup(`
-            <strong>Location Name:</strong> ${locationName}<br>
-            <strong>Status:</strong> ${status}<br>
-            <a href="/mapping/edit/${url}" target="_blank">More Info</a>
-        `);
-
-        // Array to store coordinates and markers
-        var pathCoordinates = [];
         var markers = [];
 
-        // Function to add a marker on the map and store its coordinates
-        map.on('click', function(e) {
-            var coord = [e.latlng.lat, e.latlng.lng];
-            pathCoordinates.push(coord);
-
-            // Create a marker and add it to the map
-            var marker = L.marker(coord).addTo(map);
+        // Render existing points as markers
+        pathCoordinates.forEach((coord, index) => {
+            var marker = L.marker(coord, { draggable: true }).addTo(map);
             markers.push(marker);
 
-            // Bind a click event to the marker to handle deletion
-            marker.on('click', function() {
-                // Remove the marker from the map
+            // Handle marker deletion on click
+            marker.on('click', function () {
                 map.removeLayer(marker);
+                markers.splice(index, 1);
+                updatePolyline();
+            });
 
-                // Remove the coordinates from the array
-                var index = pathCoordinates.findIndex(function(point) {
-                    return point[0] === coord[0] && point[1] === coord[1];
-                });
-
-                if (index !== -1) {
-                    pathCoordinates.splice(index, 1);
-                    markers.splice(index, 1);
-                }
+            // Handle marker dragging
+            marker.on('drag', function () {
+                updatePolyline();
             });
         });
 
-        document.getElementById('file-upload').addEventListener('change', function(event) {
+        // Function to update the polyline when markers are added, moved, or removed
+        function updatePolyline() {
+            var updatedCoords = markers.map(marker => [marker.getLatLng().lat, marker.getLatLng().lng]);
+            polyline.setLatLngs(updatedCoords);
+        }
+
+        // Add new markers and update the polyline on map click
+        map.on('click', function (e) {
+            var marker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addTo(map);
+            markers.push(marker);
+            updatePolyline();
+
+            // Handle marker deletion on click
+            marker.on('click', function () {
+                map.removeLayer(marker);
+                markers = markers.filter(m => m !== marker);
+                updatePolyline();
+            });
+
+            // Handle marker dragging
+            marker.on('drag', function () {
+                updatePolyline();
+            });
+        });
+
+        // File upload functionality
+        document.getElementById('file-upload').addEventListener('change', function (event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const base64String = e.target.result.split(',')[1]; // Get only the base64 part
                     console.log("Base64 Image String:", base64String);
 
@@ -185,41 +185,54 @@
             }
         });
 
-        // Function to save coordinates to the database
-        document.getElementById('saveButton').addEventListener('click', function() {
-            // Make a POST request to your Laravel backend
-            if(pathCoordinates.length < 2) {
+        // Save updated polyline and form data to the database
+        document.getElementById('saveButton').addEventListener('click', function () {
+            // Ensure there are enough coordinates
+            if (markers.length < 2) {
                 alert('Please add at least two coordinates to save!');
                 return;
             }
+
+            // Get Base64 image string
             const base64String = this.dataset.imageBase64;
 
-            if (!base64String) {
-                alert('Please select an image first!');
-                return;
-            }
+            // Collect updated coordinates in the desired format
+            const updatedCoords = markers.map(marker => [marker.getLatLng().lat, marker.getLatLng().lng]);
 
+            // Collect form data
+            const widthMaintenance = document.getElementById('widthMaintenance').value;
+            const lengthMaintenance = document.getElementById('lengthMaintenance').value;
+            const location = document.getElementById('lokasi_pengerjaan').value;
+            const companyName = document.getElementById('companyName').value;
+            const startDate = document.getElementById('startDate').value;
+            const status = document.getElementById('status').value;
+
+            // Send data to the backend
             fetch(`{{ route('mapping.update', $uuid) }}`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}' // CSRF token for security
                 },
-                body: JSON.stringify({ 
-                    longlat: pathCoordinates,
-                    fileUpload : base64String,
-                    widthMaintenance: document.getElementById('widthMaintenance').value,
-                    lengthMaintenance: document.getElementById('lengthMaintenance').value,
-                    location: document.getElementById('lokasi_pengerjaan').value,
-                    companyName: document.getElementById('companyName').value,
-                    startDate: document.getElementById('startDate').value
+                body: JSON.stringify({
+                    longlat: updatedCoords,
+                    fileUpload: base64String || null,
+                    widthMaintenance: widthMaintenance,
+                    lengthMaintenance: lengthMaintenance,
+                    location: location,
+                    companyName: companyName,
+                    startDate: startDate,
+                    status: status
                 })
-            })
-            .then(response => response.json())
-            .then(data => alert('Coordinates saved successfully!'))
-            // .catch(error => console.error('Error:', error)); change to alert error message max 1000 character
-            .catch(error => alert('Error:',  error.message.substring(0, 1000)));
-            console.log(pathCoordinates);
+            }).then(response => {
+                if (response.ok) {
+                    alert('Coordinates saved successfully!');
+                    window.location.href = '{{ route("mapping.index") }}';
+                } else {
+                    alert('Failed to save coordinates. Please try again!');
+                }
+            });
         });
+
     </script>
 </x-app-layout>

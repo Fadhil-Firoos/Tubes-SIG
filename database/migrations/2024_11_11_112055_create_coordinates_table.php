@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('foto')->nullable();
             $table->dateTime('tgl_start')->nullable();
             $table->dateTime('tgl_end')->nullable();
-            $table->enum('status', ['process', 'reported', 'accepted', 'rejected'])->default('process');
+            $table->enum('status', ['process', 'reported', 'accepted', 'rejected'])->default('reported');
             $table->timestamps();
         });
     }

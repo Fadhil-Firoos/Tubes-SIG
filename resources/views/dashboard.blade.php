@@ -7,27 +7,59 @@
             </div>
             <div class="w-full mt-12">
                 <div class="flex mb-4">
-                    <span class="text-xl font-bold">Data Vendor</span>
+                    <span class="text-xl font-bold">
+                        @role('admin')
+                            Data Vendor
+                        @else
+                            Data Proyek
+                        @endrole
+                    </span>
                 </div>
                 <table class="w-full table-auto">
                     <thead>
                         <tr class="text-white bg-slate-700">
-                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Nama Vendor</th>
-                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Nama Proyek</th>
                             <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Lokasi Proyek</th>
+                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">
+                                @role('admin')
+                                    Nama Vendor
+                                @else
+                                    Tanggal Mulai
+                                @endrole
+                            </th>
+                            <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Status</th>
                             <th class="py-2 px-4 border border-gray-400 text-center tracking-wider">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-gray-700">
-                            <td class="py-2 px-4 border border-gray-400 text-center">PT. Waskita Karya</td>
-                            <td class="py-2 px-4 border border-gray-400 text-center">Perbaikan Jalan Sukarame</td>
-                            <td class="py-2 px-4 border border-gray-400 text-center">Jalan sukarame no 4</td>
-                            <td class="py-3 px-1 border border-gray-400 text-center">
-                                <span class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
-                                    @click="detailVendorOpen = true">Detail</span>
-                            </td>
-                        </tr>
+                        @role('admin')
+                            @foreach ($vendors as $vendor)
+                                <tr>
+                                    <td class="py-2 px-4 border border-gray-400 text-center">{{ $vendor->coordinatesVendor->nama_lokasi }}</td>
+                                    <td class="py-2 px-4 border border-gray-400 text-center">{{ $vendor->name }}</td>
+                                    <td class="py-2 px-4 border border-gray-400 text-center">{{ $vendor->coordinatesVendor->status }}</td>
+                                    <td class="py-3 px-1 border border-gray-400 text-center">
+                                        <span class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
+                                            {{-- @click="detailVendorOpen = true" --}}
+                                            onclick="window.location.href = '{{ route('mapping.edit', $vendor->coordinatesVendor->uuid) }}'"
+                                            >Detail</span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                                @foreach ($coordinates as $coord)
+                                    <tr>
+                                        <td class="py-2 px-4 border border-gray-400 text-center">{{ $coord->nama_lokasi }}</td>
+                                        <td class="py-2 px-4 border border-gray-400 text-center">{{ $coord->tgl_start }}</td>
+                                        <td class="py-2 px-4 border border-gray-400 text-center">{{ $coord->status }}</td>
+                                        <td class="py-3 px-1 border border-gray-400 text-center">
+                                            <span class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
+                                                {{-- @click="detailVendorOpen = true" --}}
+                                                onclick="window.location.href = '{{ route('mapping.edit', $coord->uuid) }}'"
+                                                >Detail</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                        @endrole
                     </tbody>
                 </table>
                 <!-- Modal -->
