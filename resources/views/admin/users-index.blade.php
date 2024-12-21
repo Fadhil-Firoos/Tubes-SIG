@@ -7,9 +7,8 @@
             <table class="w-full table-auto">
                 <thead>
                     <tr class="text-white bg-slate-700">
-                        <th class="py-2 px-4 border border-gray-400 text-center">Nama</th>
-                        <th class="py-2 px-4 border border-gray-400 text-center">Email</th>
                         <th class="py-2 px-4 border border-gray-400 text-center">Nama Perusahaan</th>
+                        <th class="py-2 px-4 border border-gray-400 text-center">Email</th>
                         <th class="py-2 px-4 border border-gray-400 text-center">Nama Pemilik</th>
                         <th class="py-2 px-4 border border-gray-400 text-center">Alamat</th>
                         <th class="py-2 px-4 border border-gray-400 text-center">Foto</th>
@@ -22,11 +21,10 @@
                 <tbody>
                     @foreach ($data as $item)
                     <tr class="text-slate-700">
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">{{ $item->name }}</td>
-                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">{{ $item->email }}</td>
                         <td class="py-2 px-4 border border-gray-400 text-center text-sm">
-                            {{ $item->vendor->nama_company }}
+                            {{ $item->name }}
                         </td>
+                        <td class="py-2 px-4 border border-gray-400 text-center text-sm">{{ $item->email }}</td>
                         <td class="py-2 px-4 border border-gray-400 text-center text-sm">
                             {{ $item->vendor->nama_pemilik }}
                         </td>

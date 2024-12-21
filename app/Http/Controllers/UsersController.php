@@ -19,7 +19,6 @@ class UsersController extends Controller
         ->with(['vendor' => function($query) {
             $query->select(
                 'vendor.user_id',
-                'vendor.nama_company',
                 'vendor.nama_pemilik',
                 'vendor.alamat',
                 'vendor.image_users',
@@ -45,9 +44,8 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|min:3|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8', 
+            'password' => 'required|min:8',
             'nama_perusahaan' => 'required|min:3|max:255',
             'nama_pemilik' => 'required|min:3|max:255',
             'alamat' => 'required|min:3|max:255',
@@ -56,7 +54,7 @@ class UsersController extends Controller
         ]);
 
         $user =new User();
-        $user->name = $request->nama;
+        $user->name = $request->nama_perusahaan;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->status = true;
@@ -73,7 +71,6 @@ class UsersController extends Controller
 
         $vendor = new Vendor();
         $vendor->user_id = $user->id;
-        $vendor->nama_company = $request->nama_perusahaan;
         $vendor->nama_pemilik = $request->nama_pemilik;
         $vendor->alamat = $request->alamat;
         $vendor->image_users = $path;
@@ -103,7 +100,6 @@ class UsersController extends Controller
         ->with(['vendor' => function($query) {
             $query->select(
                 'vendor.user_id',
-                'vendor.nama_company',
                 'vendor.nama_pemilik',
                 'vendor.alamat',
                 'vendor.image_users',
@@ -120,7 +116,6 @@ class UsersController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'nama' => 'required|min:3|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:8',
             'nama_perusahaan' => 'required|min:3|max:255',
@@ -131,7 +126,7 @@ class UsersController extends Controller
         ]);
 
         $user = User::find($id);
-        $user->name = $request->nama;
+        $user->name = $request->nama_perusahaan;
         $user->email = $request->email;
         if ($request->password != null) {
             $user->password = bcrypt($request->password);
@@ -139,7 +134,6 @@ class UsersController extends Controller
         $user->save();
 
         $vendor = Vendor::where('user_id', $id)->first();
-        $vendor->nama_company = $request->nama_perusahaan;
         $vendor->nama_pemilik = $request->nama_pemilik;
         $vendor->alamat = $request->alamat;
         if ($request->foto != null) {

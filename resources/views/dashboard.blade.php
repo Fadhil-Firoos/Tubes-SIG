@@ -40,7 +40,6 @@
                                     <td class="py-3 px-1 border border-gray-400 text-center">
                                         @if ($vendor->coordinatesVendor)
                                             <span class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
-                                                {{-- @click="detailVendorOpen = true" --}}
                                                 onclick="window.location.href = '{{ route('mapping.edit', $vendor->coordinatesVendor->uuid) }}'"
                                                 >Detail</span>
                                         @endif
@@ -55,7 +54,6 @@
                                         <td class="py-2 px-4 border border-gray-400 text-center">{{ $coord->status }}</td>
                                         <td class="py-3 px-1 border border-gray-400 text-center">
                                             <span class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
-                                                {{-- @click="detailVendorOpen = true" --}}
                                                 onclick="window.location.href = '{{ route('mapping.edit', $coord->uuid) }}'"
                                                 >Detail</span>
                                         </td>
@@ -65,7 +63,7 @@
                     </tbody>
                 </table>
                 <!-- Modal -->
-                <div x-show="detailVendorOpen"
+                {{-- <div x-show="detailVendorOpen"
                      class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center"
                      x-cloak>
                     <div class="bg-white w-full md:max-w-3xl ld:max-w-4xl mx-auto p-6 rounded-lg" @click.away="detailVendorOpen = false">
@@ -78,23 +76,23 @@
                         <div class="space-y-4">
                             <div>
                                 <span class="font-semibold">Nama Perusahaan:</span>
-                                <span>PT. Waskita Karya</span>
+                                <span>{{ $vendor->name }}</span>
                             </div>
                             <div>
                                 <span class="font-semibold">Email:</span>
-                                <span>waskitakarya@gmail.com</span>
+                                <span>{{ $vendor->email }}</span>
                             </div>
                             <div>
                                 <span class="font-semibold">Nama Pemilik:</span>
-                                <span>Fadhil Firoos</span>
+                                <span>{{ $vendor->nama_pemilik }}</span>
                             </div>
                             <div>
                                 <span class="font-semibold">Alamat:</span>
-                                <span>Jl. Kemuning 3 Bandar Lampung, Lampung</span>
+                                <span>{{ $vendor->alamat }}</span>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -102,33 +100,33 @@
     <!-- Script untuk Chart.js -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const statusLabels = @json($statuses);
+            const statusData = @json($statusCounts);
+
             const data = {
-                labels: ['Ditolak', 'Sedang Dikerjakan', 'Diterima'],
+                labels: statusLabels,
                 datasets: [{
-                    label: 'Ditolak',
-                    data: [8, 0, 0], // Data hanya untuk Ditolak
-                    backgroundColor: '#F8BBD0',
-                    borderColor: '#F06292',
-                    borderWidth: 2,
-                    borderRadius: 5
-                }, {
-                    label: 'Sedang Dikerjakan',
-                    data: [0, 15, 0], // Data hanya untuk Sedang Dikerjakan
-                    backgroundColor: '#FFF59D',
-                    borderColor: '#FBC02D',
-                    borderWidth: 2,
-                    borderRadius: 5
-                }, {
-                    label: 'Diterima',
-                    data: [0, 0, 10], // Data hanya untuk Diterima
-                    backgroundColor: '#C8E6C9',
-                    borderColor: '#81C784',
+                    label: 'Jumlah Status',
+                    data: statusData,
+                    backgroundColor: [
+                        '#F8BBD0',
+                        '#FFF59D',
+                        '#C8E6C9',
+                        '#B3E5FC',
+                        '#FFCCBC'
+                    ],
+                    borderColor: [
+                        '#F06292',
+                        '#FBC02D',
+                        '#81C784',
+                        '#4FC3F7',
+                        '#FF7043'
+                    ],
                     borderWidth: 2,
                     borderRadius: 5
                 }]
             };
 
-            // Konfigurasi Chart
             const config = {
                 type: 'bar',
                 data: data,
@@ -140,7 +138,7 @@
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Jumlah Perbaikan',
+                                text: 'Jumlah Status',
                                 font: {
                                     family: 'Inter',
                                     size: 14,
@@ -171,29 +169,27 @@
                                 color: '#4b5563',
                                 font: {
                                     family: 'Inter',
-                                    size: 16,
+                                    size: 12,
                                     weight: 'bold'
+                                },
+                                generateLabels: function(chart) {
+                                    return chart.data.labels.map((label, index) => ({
+                                        text: label,
+                                        fillStyle: chart.data.datasets[0].backgroundColor[index],
+                                        strokeStyle: chart.data.datasets[0].borderColor[index],
+                                        lineWidth: chart.data.datasets[0].borderWidth
+                                    }));
                                 }
-                            },
-                            onClick: function(e, legendItem, legend) {
-                                // Dapatkan index dataset yang diklik
-                                const index = legendItem.datasetIndex;
-                                const chart = legend.chart;
-
-                                // Toggle visibilitas dataset
-                                const meta = chart.getDatasetMeta(index);
-                                meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden :
-                                    null;
-                                chart.update();
                             }
                         }
                     }
                 }
             };
 
-            // Render Chart
             const ctx = document.getElementById('statusChart').getContext('2d');
             new Chart(ctx, config);
         });
     </script>
+
+
 </x-app-layout>

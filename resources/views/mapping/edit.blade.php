@@ -29,14 +29,17 @@
                                 <img id="preview-image" src="{{$coordinate->foto}}" alt="Preview" class="lg:w-96 rounded-lg" />
                                 <img id="preview-image" src="" alt="Preview" class="lg:w-96 rounded-lg hidden" />
                             </div>
-                            <div class="mt-4 flex justify-center items-center text-sm/6 text-gray-500">
-                                <label for="file-upload" class="relative cursor-pointer rounded-md text-black hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2">
-                                    <span>Upload a file</span>
-                                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
-                                </label>
-                                <!-- <p class="pl-1">or drag and drop</p> -->
-                            </div>
-                            <p class="text-xs/5 text-gray-500">PNG, JPG, GIF up to 10MB</p>
+
+                            @if (!auth()->user()->hasRole('admin') && !$coordinate->status == 'reported')
+                                <div class="mt-4 flex justify-center items-center text-sm/6 text-gray-500">
+                                    <label for="file-upload" class="relative cursor-pointer rounded-md text-black hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2">
+                                        <span>Upload a file</span>
+                                        <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                    </label>
+                                    <!-- <p class="pl-1">or drag and drop</p> -->
+                                </div>
+                                <p class="text-xs/5 text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -45,7 +48,10 @@
                     <div class="mt-2">
                         <input id="widthMaintenance"
                         value="{{ $coordinate->lebar_perbaikan }}"
-                        name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                            disable
+                        @endif>
                     </div>
                 </div>
                 <div class="sm:col-span-4">
@@ -53,7 +59,10 @@
                     <div class="mt-2">
                         <input id="lengthMaintenance"
                         value="{{ $coordinate->panjang_perbaikan }}"
-                        name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                            disable
+                        @endif>
                     </div>
                 </div>
                 <div class="sm:col-span-4">
@@ -61,7 +70,10 @@
                     <div class="mt-2">
                         <input id="lokasi_pengerjaan"
                         value="{{ $coordinate->nama_lokasi }}"
-                        name="lokasi_pengerjaan" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        name="lokasi_pengerjaan" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                            disable
+                        @endif>
                     </div>
                 </div>
                 <div class="sm:col-span-4">
@@ -69,14 +81,20 @@
                     <div class="mt-2">
                         <input id="companyName"
                         value="{{ $coordinate->nama_company }}" disabled
-                        name="companyName" type="text" class="block w-full disabled:bg-gray-500 disabled:text-black rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                        name="companyName" type="text" class="block w-full disabled:bg-gray-500 disabled:text-black rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                            disable
+                        @endif>
                     </div>
                 </div>
                 <div class="sm:col-span-4">
                     <label for="startDate" class="block text-sm/6 font-medium" >Tanggal Mulai</label>
                     <input id="startDate"
                     value="{{ date('Y-m-d', strtotime($coordinate->tgl_start)) }}"
-                    name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                    name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                            disabled
+                        @endif>
                 </div>
 
                 @if ($coordinate->status == 'reported' || $coordinate->status == 'finish' && Auth::user()->hasRole('admin'))
@@ -96,8 +114,13 @@
                         <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
                     </div>
 
-                @elseif ($coordinate->status == 'process' && Auth::user()->hasRole('vendor'))
+                @elseif ($coordinate->status == 'process' && auth()->user()->hasRole('vendor'))
                     <input type="hidden" id="status" value="finish">
+                    <div class="flex items-center justify-center pt-7">
+                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
+                    </div>
+                @elseif ($coordinate->status == 'rejected' && auth()->user()->hasRole('vendor'))
+                    <input type="hidden" id="status" value="reported">
                     <div class="flex items-center justify-center pt-7">
                         <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
                     </div>
@@ -118,7 +141,7 @@
         var pathCoordinates = {!! json_encode($coordinate->longlat) !!};
 
         // Convert to array format if needed
-        pathCoordinates = pathCoordinates.map(coord => 
+        pathCoordinates = pathCoordinates.map(coord =>
             Array.isArray(coord) ? coord : [coord.lat, coord.lng]
         );
 

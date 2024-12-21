@@ -15,14 +15,13 @@
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
+        <div class="min-h-screen flex flex-col items-center justify-center pt-6 sm:pt-0 bg-gray-400">
+            <div class="flex items-center mb-6">
+                <img src="/images/logo.png" class="h-8 mr-3" alt="FlowBite Logo" />
+                <span class="text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">GEOPALA</span>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md px-6 py-4 bg-white shadow-md overflow-hidden rounded-lg">
                 {{ $slot }}
             </div>
         </div>

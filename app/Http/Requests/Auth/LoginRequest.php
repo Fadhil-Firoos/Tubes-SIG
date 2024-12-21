@@ -44,7 +44,7 @@ class LoginRequest extends FormRequest
 
         $user = User::where('email', $this->email)->first();
 
-        if (!$user || $user->status === 0) {
+        if (!$user || $user->status == false) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

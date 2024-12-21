@@ -16,16 +16,32 @@ class DashboardController extends Controller
     public function index()
     {
         if(auth()->user()->hasRole('admin')) {
-            $vendors = User::role('vendor')->with('coordinatesVendor')->get();
-            $coordinates = Coordinate::all();
-            return view('dashboard', compact('vendors', 'coordinates'));
+            $vendors = User::role('vendor')->with('vendor')->get();
+            $coordinates = Coordinate::all();$countStatus = Coordinate::select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->get()
+            ->keyBy('status')
+            ->map(fn ($item) => $item->total)
+            ->toArray();
+
+            $statuses = ['reported', 'process', 'finish', 'accepted', 'rejected'];
+            $statusCounts = array_map(fn ($status) => $countStatus[$status] ?? 0, $statuses);
+
+            return view('dashboard', compact('vendors', 'coordinates', 'statusCounts', 'statuses'));
         }else {
             $coordinates = Coordinate::where('unique_id', Auth::id())->get();
             $countStatus = Coordinate::select('status', DB::raw('count(*) as total'))
-                ->where('unique_id', Auth::id())
-                ->groupBy('status')
-                ->get();
-            return view('dashboard', compact('coordinates'));
+            ->where('unique_id', Auth::id())
+            ->groupBy('status')
+            ->get()
+            ->keyBy('status')
+            ->map(fn ($item) => $item->total)
+            ->toArray();
+
+            $statuses = ['reported', 'process', 'finish', 'accepted', 'rejected'];
+            $statusCounts = array_map(fn ($status) => $countStatus[$status] ?? 0, $statuses);
+
+            return view('dashboard', compact('coordinates', 'statusCounts', 'statuses'));
         }
     }
 

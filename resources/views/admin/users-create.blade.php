@@ -7,11 +7,11 @@
             <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="{{ route('admin.users-store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="">
-                    <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama <span class="text-red-500">*</span></label>
-                    <input type="text" id="nama" name="nama"
+                    <label for="nama_perusahaan" class="block mb-2 text-sm font-medium text-gray-900">Nama Perusahaan <span class="text-red-500">*</span></label>
+                    <input type="text" id="nama_perusahaan" name="nama_perusahaan"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                        placeholder="Masukan nama" value="{{ old('nama') }}" required />
-                    @error('nama')
+                        placeholder="Masukan nama perusahaan" value="{{ old('nama_perusahaan') }}" required />
+                    @error('nama_perusahaan')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
@@ -25,11 +25,11 @@
                     @enderror
                 </div>
                 <div class="">
-                    <label for="nama_perusahaan" class="block mb-2 text-sm font-medium text-gray-900">Nama Perusahaan <span class="text-red-500">*</span></label>
-                    <input type="text" id="nama_perusahaan" name="nama_perusahaan"
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password <span class="text-red-500">*</span></label>
+                    <input type="text" id="password" name="password"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                        placeholder="Masukan nama perusahaan" value="{{ old('nama_perusahaan') }}" required />
-                    @error('nama_perusahaan')
+                        placeholder="Masukan password" value="{{ old('password') }}" required />
+                    @error('password')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
@@ -66,15 +66,6 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                         placeholder="Masukan rekening" value="{{ old('rekening') }}" required />
                     @error('rekening')
-                        <div class="text-red-500">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="">
-                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password <span class="text-red-500">*</span></label>
-                    <input type="text" id="password" name="password"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                        placeholder="Masukan password" value="{{ old('password') }}" required />
-                    @error('password')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>

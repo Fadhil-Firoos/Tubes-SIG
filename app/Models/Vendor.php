@@ -11,7 +11,6 @@ class Vendor extends Model
 
     protected $fillable = [
         'user_id',
-        'nama_company',
         'nama_pemilik',
         'alamat',
         'image_users',
