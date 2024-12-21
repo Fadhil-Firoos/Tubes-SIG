@@ -21,7 +21,6 @@ class DashboardController extends Controller
             return view('dashboard', compact('vendors', 'coordinates'));
         }else {
             $coordinates = Coordinate::where('unique_id', Auth::id())->get();
-            // count of each status 'process', 'reported', 'accepted', 'rejected'
             $countStatus = Coordinate::select('status', DB::raw('count(*) as total'))
                 ->where('unique_id', Auth::id())
                 ->groupBy('status')

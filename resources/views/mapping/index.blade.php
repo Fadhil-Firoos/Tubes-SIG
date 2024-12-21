@@ -21,6 +21,7 @@
                         <option value="">Select Status</option>
                         <option value="reported" {{ request('status') === 'reported' ? 'selected' : '' }}>Reported</option>
                         <option value="process" {{ request('status') === 'process' ? 'selected' : '' }}>Process</option>
+                        <option value="finish" {{ request('status') === 'finish' ? 'selected' : '' }}>Finish</option>
                         <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>Accepted</option>
                         <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Rejected</option>
                     </select>

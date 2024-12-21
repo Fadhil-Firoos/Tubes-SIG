@@ -193,12 +193,14 @@
                     companyName: document.getElementById('companyName').value,
                     startDate: document.getElementById('startDate').value
                 })
-            })
-            .then(response => response.json())
-            .then(window.location.href = "{{ route('mapping.index') }}")
-            // .catch(error => console.error('Error:', error)); change to alert error message max 1000 character
-            .catch(error => alert('Error:',  error.message.substring(0, 1000)));
-            console.log(pathCoordinates);
+            }).then(response => {
+                if (response.ok) {
+                    alert('Coordinates saved successfully!');
+                    window.location.href = '{{ route("mapping.index") }}';
+                } else {
+                    alert('Failed to save coordinates. Please try again!');
+                }
+            });
         });
     </script>
 </x-app-layout>

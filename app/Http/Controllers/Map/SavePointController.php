@@ -21,7 +21,7 @@ class SavePointController extends Controller
         $startDate = $request->query('start_date', null);
 
         // Sanitize query parameters
-        $status = in_array($status, ['process', 'reported', 'accepted', 'rejected']) ? $status : null;
+        $status = in_array($status, ['reported', 'process', 'finish', 'accepted', 'rejected']) ? $status : null;
         $startDate = $startDate ? trim($startDate) : null;
 
         // Base query
@@ -55,6 +55,9 @@ class SavePointController extends Controller
      */
     public function create()
     {
+        if (auth()->user()->hasRole('admin')) {
+            return redirect()->route('mapping.index');
+        }
         $geoJson = $this->getGeoJson();
         return view('mapping.create', compact('geoJson'));
     }
@@ -64,6 +67,9 @@ class SavePointController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth()->user()->hasRole('admin')) {
+            return redirect()->route('mapping.index');
+        }
         $request->validate([
             'longlat' => 'required',
             'fileUpload' => 'required|string',
@@ -90,14 +96,14 @@ class SavePointController extends Controller
                 'nama_lokasi' => $request->location,
                 'foto' => $fileName,
                 'nama_company' => Auth::user()->name,
-                'status' => 'process',
+                'status' => 'reported',
             ];
             Coordinate::create($coordinate);
             DB::commit();
-            return response()->json(['success' => 'Coordinates saved successfully']);
+            return response()->json(['success' => 'Coordinates saved successfully'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' =>$e->getMessage()]);
+            return response()->json(['error' =>$e->getMessage()], 500);
         }
     }
 
@@ -138,7 +144,7 @@ class SavePointController extends Controller
             'lengthMaintenance' => 'required|numeric',
             'location' => 'required|string',
             'startDate' => 'required|date',
-            'status' => 'required|in:process,reported,accepted,rejected',
+            'status' => 'required|in:process,reported,finish,accepted,rejected',
         ]);
 
         DB::beginTransaction();

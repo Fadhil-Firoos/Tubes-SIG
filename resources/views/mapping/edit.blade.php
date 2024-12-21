@@ -78,19 +78,30 @@
                     value="{{ date('Y-m-d', strtotime($coordinate->tgl_start)) }}"
                     name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                 </div>
-                <div class="sm:col-span-4">
-                    <label for="status" class="block text-sm/6 font-medium">Status</label>
-                    <select id="status" name="status" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
-                        <option value="reported" {{ $coordinate->status == 'reported' ? 'selected' : '' }}>Reported</option>
-                        <option value="process" {{ $coordinate->status == 'process' ? 'selected' : '' }}>Process</option>
-                        <option value="accepted" {{ $coordinate->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
-                        <option value="rejected" {{ $coordinate->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                    </select>
-                </div>
 
-                <div class="flex items-center justify-center pt-7">
-                    <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
-                </div>
+                @if ($coordinate->status == 'reported' || $coordinate->status == 'finish' && Auth::user()->hasRole('admin'))
+                    <div class="sm:col-span-4">
+                        <label for="status" class="block text-sm/6 font-medium">Status</label>
+                        <select id="status" name="status" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                            <option value="reported" {{ $coordinate->status == 'reported' ? 'selected' : '' }}>Reported</option>
+                            <option value="process" {{ $coordinate->status == 'process' ? 'selected' : '' }}>Process</option>
+                            <option value="rejected" {{ $coordinate->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            @if($coordinate->status == 'finish')
+                            <option value="accepted" {{ $coordinate->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
+                            @endif
+                        </select>
+                    </div>
+
+                    <div class="flex items-center justify-center pt-7">
+                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
+                    </div>
+
+                @elseif ($coordinate->status == 'process' && Auth::user()->hasRole('vendor'))
+                    <input type="hidden" id="status" value="finish">
+                    <div class="flex items-center justify-center pt-7">
+                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
