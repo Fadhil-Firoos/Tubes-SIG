@@ -95,38 +95,43 @@
                         @endif>
                 </div>
                 
-                @if ((in_array($coordinate->status, ['reported', 'process', 'finish', 'accepted'])) && Auth::user()->hasRole('admin'))
+                @php
+                    $userRole = Auth::user()->getRoleNames()->first();
+                    $isAdmin = $userRole === 'admin';
+                    $isVendor = $userRole === 'vendor';
+                    $status = $coordinate->status;
+                @endphp
+
+                @if (in_array($status, ['reported', 'process', 'finish', 'accepted']) && $isAdmin)
                     <div class="sm:col-span-4">
                         <label for="status" class="block text-sm/6 font-medium">Status</label>
-                        <select id="status" name="status" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                        @if ($coordinate->status == 'process')
-                            @readonly(true)
-                            >
-                            <option value="process" {{ $coordinate->status == 'process' ? 'selected' : '' }}>Process</option>
-                        @else
-                            >
-                            @if($coordinate->status == 'finish')
+                        <select id="status" name="status" 
+                                class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                                @if ($status === 'process') readonly @endif>
+
+                            @if ($status === 'process')
+                                <option value="process" selected>Process</option>
+                            @elseif ($status === 'finish')
                                 <option value="accepted" selected>Accepted</option>
-                                <option value="rejected" {{ $coordinate->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                <option value="rejected" {{ $status === 'rejected' ? 'selected' : '' }}>Rejected</option>
                             @else
-                                <option value="reported" {{ $coordinate->status == 'reported' ? 'selected' : '' }}>Reported</option>
-                                <option value="process" {{ $coordinate->status == 'process' ? 'selected' : '' }}>Process</option>
-                                <option value="rejected" {{ $coordinate->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                <option value="reported" {{ $status === 'reported' ? 'selected' : '' }}>Reported</option>
+                                <option value="process" {{ $status === 'process' ? 'selected' : '' }}>Process</option>
+                                <option value="rejected" {{ $status === 'rejected' ? 'selected' : '' }}>Rejected</option>
                             @endif
-                        @endif
+
                         </select>
                     </div>
 
                     <div class="flex items-center justify-center pt-7">
                         <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Simpan Laporan</button>
                     </div>
-
-                @elseif ($coordinate->status == 'process' && auth()->user()->hasRole('vendor'))
+                @elseif ($status === 'process' && $isVendor)
                     <input type="hidden" id="status" value="finish">
                     <div class="flex items-center justify-center pt-7">
                         <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Selesai</button>
                     </div>
-                @elseif ($coordinate->status == 'rejected' && auth()->user()->hasRole('vendor'))
+                @elseif ($status === 'rejected' && $isVendor)
                     <input type="hidden" id="status" value="reported">
                     <div class="flex items-center justify-center pt-7">
                         <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Update Laporan</button>
