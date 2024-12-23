@@ -1,66 +1,113 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PENGEMBANGAN SISTEM INFORMASI GEOGRAFIS PELAPORAN PERBAIKAN JALAN
+## Studi Kasus: Kec. Sukarame, Bandar Lampung
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+<div style="display: flex; align-items: center;">
+    <img src="https://github.com/Fadhil-Firoos/Tubes-SIG/blob/development/public/images/logo.png" alt="FlowBite Logo" style="height: 32px; margin-right: 12px;" />
+    <span style="font-size: 24px; font-weight: 600; color: black;">GEOPALA</span>
+</div>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Deskripsi Proyek
 
-## Learning Laravel
+Proyek ini bertujuan untuk mengembangkan sistem pelaporan dan pemantauan perbaikan jalan di Kecamatan Sukarame, Bandar Lampung. Sistem ini akan memfasilitasi komunikasi antara vendor (kontraktor) dan Dinas PUPR dalam melaporkan dan memantau perbaikan jalan.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Masalah yang Dihadapi
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Pelaporan progress perbaikan kerusakan jalan masih dilakukan secara manual oleh Dinas PUPR.
+- Kurangnya transparansi dan efisiensi dalam pelaporan dan pemantauan status perbaikan jalan.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Aktor Utama
 
-## Laravel Sponsors
+- **Admin (Dinas PUPR)**:
+  - Mengelola dashboard yang menampilkan data perbaikan berdasarkan status (ditolak, sedang dikerjakan, diterima).
+  - Mengakses peta yang menunjukkan keseluruhan laporan yang sedang dikerjakan dan diterima.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Vendor (Kontraktor)**:
+  - Melihat peta yang berisi proyek-proyek yang dikerjakan oleh vendor tersebut.
+  - Menggunakan fitur untuk membuat laporan perbaikan jalan.
 
-### Premium Partners
+## Fitur Utama
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- **Pelaporan Kerusakan Jalan**:
+  - Vendor dapat melaporkan jenis kerusakan jalan dengan data inputan seperti foto, lebar perbaikan, panjang perbaikan, nama lokasi, nama company, dan tanggal mulai.
+  - Laporan dapat diterima atau ditolak oleh Admin berdasarkan kriteria tertentu.
 
-## Contributing
+- **Tracking Status Pekerjaan**:
+  - Setelah laporan diterima, lokasi kerusakan akan ditampilkan dalam bentuk titik-titik pada peta.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Tujuan Website
 
-## Code of Conduct
+- Meningkatkan efisiensi pelaporan dan pemantauan perbaikan jalan.
+- Memfasilitasi komunikasi yang lebih baik antara vendor dan Dinas PUPR.
+- Menyediakan data yang akurat dan real-time mengenai status perbaikan jalan.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Website
 
-## Security Vulnerabilities
+Kunjungi website kami di: [http://geopala.my.id](http://geopala.my.id)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+# Team 🤝 :
+|          Nama         | NIM |       ROLE       |
+|:---------------------:|:----------:|:----------------:|
+| Fadhil Firoos | 121140142  | Back End |
+| Adi Sulaksono | 120140038 | Back End |
+| Inori Muira Sitanggang | 121140020 | Technical Writer |
+| Henry Carnegie | 121140054 | Front End |
+| Nikola Arinanda | 121140202 | Front End |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Instalasi dan Persyaratan
+
+### Persyaratan
+
+- **Laravel**: Versi 11
+- **PHP**: Minimum 8.2
+- **Database**: PostgreSQL dengan PostGIS dan pgAdmin
+- **Peta**: Leaflet.js
+
+### Instalasi
+
+1. Clone repositori ini:
+   ```bash
+   git clone https://github.com/Fadhil-Firoos/Tubes-SIG.git
+
+2. Masuk ke direktori proyek:
+    ```bash
+    cd Tubes-SIG
+    
+3. Install dependensi menggunakan Composer: Pastikan Anda telah menginstal Composer. Jika belum, Anda dapat mengunduhnya dari [getcomposer.org](https://getcomposer.org/).
+    ```bash
+       composer install
+    ```
+
+4. Buat file .env dan sesuaikan konfigurasi database:
+    ```bash
+    cp .env.example .env
+    ```
+    
+    - Edit file .env menggunakan editor teks dan sesuaikan pengaturan database Anda:
+      ```bash
+      DB_CONNECTION=pgsql
+        DB_HOST=127.0.0.1
+        DB_PORT=5432
+        DB_DATABASE=nama_database
+        DB_USERNAME=nama_pengguna
+        DB_PASSWORD=kata_sandi
+      ```
+      
+5. Generate key aplikasi:
+    ```bash
+    php artisan key:generate
+
+6. Jalankan migrasi database: Pastikan PostgreSQL dan PostGIS telah terinstal dan dikonfigurasi dengan benar. Kemudian jalankan perintah berikut untuk melakukan migrasi:
+    ```bash
+    php artisan migrate
+
+7. Jalankan server lokal: Setelah migrasi selesai, Anda dapat menjalankan server lokal dengan perintah:
+    ```bash
+    php artisan serve
+
+8. Akses aplikasi: Buka browser Anda dan akses aplikasi di http://localhost:8000.
+    
