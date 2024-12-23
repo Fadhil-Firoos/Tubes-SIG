@@ -15,7 +15,7 @@
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-l mt-14">
             <form method="GET" action="{{ url()->current() }}" id="query-form" class="my-3 flex max-md:flex-col gap-4 md:gap-10">
                 <!-- Status Dropdown -->
-                <div>
+                <!-- <div>
                     <label for="status">Status:</label>
                     <select name="status" id="status" onchange="updateQuery()">
                         <option value="">Select Status</option>
@@ -25,18 +25,52 @@
                         <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>Accepted</option>
                         <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Rejected</option>
                     </select>
-                </div>
+                </div> -->
                 <!-- Start Date Input -->
-                <div>
+                <!-- <div>
                     <label for="start_date">Start Date:</label>
                     <input
                         type="datetime-local"
+                        inline-datepicker
                         name="start_date"
                         id="start_date"
                         value="{{ request('start_date') ? \Carbon\Carbon::parse(request('start_date'))->format('Y-m-d\TH:i') : '' }}"
                         onchange="updateQuery()"
                     >
+                </div> -->
+
+                <!-- Status Dropdown -->
+                <div class="mb-4">
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status:</label>
+                    <select 
+                        name="status" 
+                        id="status" 
+                        class="block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        onchange="updateQuery()"
+                    >
+                        <option value="" class="text-gray-400">Select Status</option>
+                        <option value="reported" {{ request('status') === 'reported' ? 'selected' : '' }}>Reported</option>
+                        <option value="process" {{ request('status') === 'process' ? 'selected' : '' }}>Process</option>
+                        <option value="finish" {{ request('status') === 'finish' ? 'selected' : '' }}>Finish</option>
+                        <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>Accepted</option>
+                        <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Rejected</option>
+                    </select>
                 </div>
+
+                <!-- Start Date Input -->
+                <div class="mb-4">
+                    <label for="start_date" class="block text-sm font-medium text-gray-700 mb-2">Start Date:</label>
+                    <input
+                        type="datetime-local"
+                        name="start_date"
+                        id="start_date"
+                        class="block w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        value="{{ request('start_date') ? \Carbon\Carbon::parse(request('start_date'))->format('Y-m-d\TH:i') : '' }}"
+                        onchange="updateQuery()"
+                    >
+                    <!-- <input id="start_date" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date"> -->
+                </div>
+
             </form>
             <div id="map" class="rounded-lg z-0"></div>
             <div class="mt-4 overflow-x-scroll">
