@@ -30,7 +30,6 @@
                                 <img id="preview-image" src="" alt="Preview" class="lg:w-96 rounded-lg hidden" />
                             </div>
 
-                            @if (!auth()->user()->hasRole('admin') && !$coordinate->status == 'reported')
                                 <div class="mt-4 flex justify-center items-center text-sm/6 text-gray-500">
                                     <label for="file-upload" class="relative cursor-pointer rounded-md text-black hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2">
                                         <span>Upload a file</span>
@@ -39,7 +38,6 @@
                                     <!-- <p class="pl-1">or drag and drop</p> -->
                                 </div>
                                 <p class="text-xs/5 text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -50,7 +48,7 @@
                         value="{{ $coordinate->lebar_perbaikan }}"
                         name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                         @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
-                            disable
+                            @readonly(true)
                         @endif>
                     </div>
                 </div>
@@ -61,7 +59,7 @@
                         value="{{ $coordinate->panjang_perbaikan }}"
                         name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                         @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
-                            disable
+                            @readonly(true)
                         @endif>
                     </div>
                 </div>
@@ -72,7 +70,7 @@
                         value="{{ $coordinate->nama_lokasi }}"
                         name="lokasi_pengerjaan" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                         @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
-                            disable
+                            @readonly(true)
                         @endif>
                     </div>
                 </div>
@@ -83,7 +81,7 @@
                         value="{{ $coordinate->nama_company }}" disabled
                         name="companyName" type="text" class="block w-full disabled:bg-gray-500 disabled:text-black rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                         @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
-                            disable
+                            @readonly(true)
                         @endif>
                     </div>
                 </div>
@@ -93,7 +91,7 @@
                     value="{{ date('Y-m-d', strtotime($coordinate->tgl_start)) }}"
                     name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                         @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
-                            disabled
+                            @readonly(true)
                         @endif>
                 </div>
 
