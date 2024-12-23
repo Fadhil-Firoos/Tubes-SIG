@@ -74,22 +74,16 @@
                                     @endif
                                 </td>
                                 <td class="py-3 px-1 border border-gray-400 text-center">
-                                    <span
-                                        class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer mr-2"
-                                        @click="detailVendorOpen = true"
-                                        >
-                                        Detail
-                                    </span>
                                     @if ($coord->status == 'rejected' && auth()->user()->hasRole('vendor'))
                                         <span
-                                        class="bg-red-100 ring-1 ring-red-600 hover:bg-red-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
+                                        class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer mr-2"
                                         onclick="window.location.href = '{{ route('mapping.edit', $coord->uuid) }}'"
                                         >
                                         Edit
                                         </span>
                                     @elseif ($coord->status == 'process' && auth()->user()->hasRole('vendor'))
                                         <span
-                                        class="bg-red-100 ring-1 ring-red-600 hover:bg-red-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
+                                        class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer mr-2"
                                         onclick="window.location.href = '{{ route('mapping.edit', $coord->uuid) }}'"
                                         >
                                         Request Finish
@@ -97,14 +91,14 @@
                                     @endif
                                     @if ($coord->status == 'reported' && auth()->user()->hasRole('admin'))
                                         <span
-                                        class="bg-red-100 ring-1 ring-red-600 hover:bg-red-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
+                                        class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer mr-2"
                                         onclick="window.location.href = '{{ route('mapping.edit', $coord->uuid) }}'"
                                         >
                                         Review
                                         </span>
                                     @elseif ($coord->status == 'finish' && auth()->user()->hasRole('admin'))
                                         <span
-                                        class="bg-red-100 ring-1 ring-red-600 hover:bg-red-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer"
+                                        class="bg-indigo-100 ring-1 ring-indigo-600 hover:bg-indigo-600 hover:text-white transition-all px-4 py-2 rounded-lg text-sm text-slate-600 font-semibold cursor-pointer mr-2"
                                         onclick="window.location.href = '{{ route('mapping.edit', $coord->uuid) }}'"
                                         >
                                         Review
@@ -115,75 +109,6 @@
                         @endforeach
                     </tbody>
                 </table>
-                <!-- Modal -->
-                @foreach ($coordinates as $coord)
-                    <div x-show="detailVendorOpen"
-                        class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center" x-cloak x-transition>
-                        <div class="bg-white w-[50%] lg:max-w-max md:max-w-2xl h-fit max-h-[70%] md:max-h-[80%] lg:max-h-[70%] xl:max-h-[80%] mx-auto p-6 rounded-lg overflow-y-auto"
-                            @click.away="detailVendorOpen = false" @click.stop>
-                            <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-lg font-bold">Detail Vendor</h2>
-                                <button @click="detailVendorOpen = false"
-                                    class="text-gray-500 hover:text-gray-800 font-bold text-2xl">
-                                    &times;
-                                </button>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-y-2 gap-x-8">
-                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
-                                    <span class="w-full">Nama Perusahaan</span>
-                                    <span class="w-full text-base font-normal">: {{ $coord->nama_company }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
-                                    <span class="w-full">Lokasi Proyek</span>
-                                    <span class="w-full text-base font-normal">: {{ $coord->nama_lokasi }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
-                                    <span class="w-full">Status</span>
-                                    <span class="w-full text-base font-normal">:
-                                        @if ($coord->status == 'accepted')
-                                            <span
-                                                class="bg-emerald-200 px-4 py-2 rounded-lg text-sm text-emerald-800 font-semibold">Accepted</span>
-                                        @elseif ($coord->status == 'rejected')
-                                            <span
-                                                class="bg-red-200 px-4 py-2 rounded-lg text-sm text-red-800 font-semibold">Rejected</span>
-                                        @elseif ($coord->status == 'finish')
-                                            <span
-                                                class="bg-amber-200 px-4 py-2 rounded-lg text-sm text-amber-800 font-semibold">Finish</span>
-                                        @elseif ($coord->status == 'process')
-                                            <span
-                                                class="bg-amber-200 px-4 py-2 rounded-lg text-sm text-amber-800 font-semibold">Process</span>
-                                        @elseif ($coord->status == 'reported')
-                                            <span
-                                                class="bg-gray-200 px-4 py-2 rounded-lg text-sm text-gray-800 font-semibold">Reported</span>
-                                        @endif
-                                    </span>
-                                </div>
-                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
-                                    <span class="w-full">Panjang Perbaikan</span>
-                                    <span class="w-full text-base font-normal">: {{ $coord->panjang_perbaikan }} meter</span>
-                                </div>
-                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
-                                    <span class="w-full">Lebar Perbaikan</span>
-                                    <span class="w-full text-base font-normal">: {{ $coord->lebar_perbaikan }} meter</span>
-                                </div>
-                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
-                                    <span class="w-full">Longitude Latitude</span>
-                                    <span class="w-full text-base font-normal">:
-                                        {{ implode(' | ', array_map(fn($point) => implode(', ', $point), $coord->longlat)) }}
-                                    </span>
-                                </div>
-                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
-                                    <span class="w-full">Tanggal Mulai</span>
-                                    <span class="w-full text-base font-normal">: {{ $coord->tgl_start }}</span>
-                                </div>
-                                <div class="grid grid-cols-2 md:flex text-base font-medium w-full">
-                                    <span class="w-full">Tanggal Selesai</span>
-                                    <span class="w-full text-base font-normal">: {{ ($coord->tgl_end != null) ? $coord->tgl_end : '-' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
             </div>
         </div>
     </div>

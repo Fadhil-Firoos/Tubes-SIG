@@ -47,7 +47,7 @@
                         <input id="widthMaintenance"
                         value="{{ $coordinate->lebar_perbaikan }}"
                         name="widthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                        @if( in_array($coordinate->status, ['reported', 'process', 'finish', 'accepted']) )
                             @readonly(true)
                         @endif>
                     </div>
@@ -58,7 +58,7 @@
                         <input id="lengthMaintenance"
                         value="{{ $coordinate->panjang_perbaikan }}"
                         name="lengthMaintenance" type="number" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                        @if( in_array($coordinate->status, ['reported', 'process', 'finish', 'accepted']) )
                             @readonly(true)
                         @endif>
                     </div>
@@ -69,7 +69,7 @@
                         <input id="lokasi_pengerjaan"
                         value="{{ $coordinate->nama_lokasi }}"
                         name="lokasi_pengerjaan" type="text" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                        @if( in_array($coordinate->status, ['reported', 'process', 'finish', 'accepted']) )
                             @readonly(true)
                         @endif>
                     </div>
@@ -80,7 +80,7 @@
                         <input id="companyName"
                         value="{{ $coordinate->nama_company }}" disabled
                         name="companyName" type="text" class="block w-full disabled:bg-gray-500 disabled:text-black rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                        @if( in_array($coordinate->status, ['reported', 'process', 'finish', 'accepted']) )
                             @readonly(true)
                         @endif>
                     </div>
@@ -90,37 +90,46 @@
                     <input id="startDate"
                     value="{{ date('Y-m-d', strtotime($coordinate->tgl_start)) }}"
                     name="startDate" type="date" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                        @if (auth()->user()->hasRole('admin') && $coordinate->status == 'reported')
+                        @if( in_array($coordinate->status, ['reported', 'process', 'finish', 'accepted']) )
                             @readonly(true)
                         @endif>
                 </div>
-
-                @if ($coordinate->status == 'reported' || $coordinate->status == 'finish' && Auth::user()->hasRole('admin'))
+                
+                @if ((in_array($coordinate->status, ['reported', 'process', 'finish', 'accepted'])) && Auth::user()->hasRole('admin'))
                     <div class="sm:col-span-4">
                         <label for="status" class="block text-sm/6 font-medium">Status</label>
-                        <select id="status" name="status" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
-                            <option value="reported" {{ $coordinate->status == 'reported' ? 'selected' : '' }}>Reported</option>
+                        <select id="status" name="status" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                        @if ($coordinate->status == 'process')
+                            @readonly(true)
+                            >
                             <option value="process" {{ $coordinate->status == 'process' ? 'selected' : '' }}>Process</option>
-                            <option value="rejected" {{ $coordinate->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                        @else
+                            >
                             @if($coordinate->status == 'finish')
-                            <option value="accepted" {{ $coordinate->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
+                                <option value="accepted" selected>Accepted</option>
+                                <option value="rejected" {{ $coordinate->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            @else
+                                <option value="reported" {{ $coordinate->status == 'reported' ? 'selected' : '' }}>Reported</option>
+                                <option value="process" {{ $coordinate->status == 'process' ? 'selected' : '' }}>Process</option>
+                                <option value="rejected" {{ $coordinate->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
                             @endif
+                        @endif
                         </select>
                     </div>
 
                     <div class="flex items-center justify-center pt-7">
-                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
+                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Simpan Laporan</button>
                     </div>
 
                 @elseif ($coordinate->status == 'process' && auth()->user()->hasRole('vendor'))
                     <input type="hidden" id="status" value="finish">
                     <div class="flex items-center justify-center pt-7">
-                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
+                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Selesai</button>
                     </div>
                 @elseif ($coordinate->status == 'rejected' && auth()->user()->hasRole('vendor'))
                     <input type="hidden" id="status" value="reported">
                     <div class="flex items-center justify-center pt-7">
-                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Save Coordinates</button>
+                        <button class="bg-blue-600 px-4 py-4 rounded-lg text-white" id="saveButton">Update Laporan</button>
                     </div>
                 @endif
             </div>
@@ -133,6 +142,23 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: '© Geopala',
+        }).addTo(map);
+
+        // Style function for GeoJSON data
+        function styleFeature(feature) {
+            return {
+                color: "#FF0000",
+                weight: 3,
+                opacity: 0.6
+            };
+        }
+        
+        const geojsonData = {!! $geoJson !!};
+
+        // Add GeoJSON data to the map and disable selection
+        const geojsonLayer = L.geoJSON(geojsonData, {
+            style: styleFeature,
+            interactive: false // Disable interaction to prevent selection
         }).addTo(map);
 
         // Normalize pathCoordinates from the database
